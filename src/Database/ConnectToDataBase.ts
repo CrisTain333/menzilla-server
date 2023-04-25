@@ -1,6 +1,6 @@
 import mongoose, { ConnectOptions } from "mongoose";
 require("dotenv").config();
-export const connectToDatabase = async () => {
+const connectToDatabase = async () => {
   try {
     await mongoose
       .connect(process.env.MONGO_URI!, {
@@ -17,3 +17,4 @@ export const connectToDatabase = async () => {
     process.exit(1);
   }
 };
+export default connectToDatabase;
