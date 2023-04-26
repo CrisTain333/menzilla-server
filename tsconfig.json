@@ -5,7 +5,9 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "esModuleInterop": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./dist/types" // Add this line
   },
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
