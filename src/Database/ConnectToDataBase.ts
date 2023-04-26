@@ -10,7 +10,7 @@ const connectToDatabase = async () => {
         console.log("Connected to API Database");
       })
       .catch((err) => {
-        console.log(`Database connection error occurred -`, err);
+        console.log(`Database connection error occurred `, err);
       });
   } catch (error: any) {
     console.error(error.message);
