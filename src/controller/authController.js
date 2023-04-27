@@ -33,6 +33,7 @@ const login = async (req, res, next) => {
     res.send({
       status: result?.status,
       message: result?.message,
+      token: result?.token,
     });
   } catch (error) {
     console.log(error);
