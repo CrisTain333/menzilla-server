@@ -26,6 +26,7 @@ exports.handleRegisterUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      isEmailVerified: false,
       phone,
     };
 
@@ -34,11 +35,10 @@ exports.handleRegisterUser = async (req, res) => {
 
     const activationUrl = `http://localhost:3000/auth/email-verify?token=${activationToken}`;
     const result = await sendEmail(user, activationUrl);
-    console.log(result);
-
+    const data = await UserModel.create(user);
     // send success message
     return {
-      message: `please check your email:- ${user.email} to activate your account!`,
+      message: `account created successfully`,
       status: 201,
     };
   } catch (error) {
@@ -50,7 +50,24 @@ exports.handleRegisterUser = async (req, res) => {
 // ---------------------- handle Verify Email ----------------------
 exports.handleVerifyEmail = async (req, res) => {
   const { token } = req.query;
-  return { message: token, status: 201 };
+  const newUser = await jwt.verify(token, process.env.JWT_SECRET);
+  if (!newUser) {
+    return { message: "Invalid token", status: 400 };
+  }
+  const { email } = newUser;
+
+  // Check if the user already exists
+  const existingUser = await UserModel.findOne({ $or: [{ email }] });
+
+  if (existingUser?.isEmailVerified) {
+    return { status: 400, message: "Email already Verified" };
+  }
+  const user = await UserModel.findOneAndUpdate(
+    { email },
+    { isEmailVerified: true }
+  );
+
+  return { message: "user created", status: 201 };
 };
 
 // ---------------------- handle login ----------------------

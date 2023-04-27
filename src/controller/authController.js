@@ -17,13 +17,12 @@ const registerUser = async (req, res, next) => {
 const verifyEmail = async (req, res, next) => {
   try {
     const result = await authService.handleVerifyEmail(req, res);
-    console.log(result);
     res.send({
       status: result?.status,
       message: result?.message,
     });
   } catch (error) {
-    console.log(error);
+    res.json({ status: 500, message: error?.message });
     next(error);
   }
 };
