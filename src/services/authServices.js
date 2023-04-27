@@ -47,5 +47,10 @@ exports.handleRegisterUser = async (req, res) => {
   }
 };
 
+// ---------------------- handle Verify Email ----------------------
+exports.handleVerifyEmail = async (req, res) => {
+  const { token } = req.query;
+  return { message: token, status: 201 };
+};
+
 // ---------------------- handle login ----------------------
-// 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
