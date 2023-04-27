@@ -5,7 +5,6 @@ const cors = require("cors");
 const connectToDatabase = require("./Database/ConnectToDatabase");
 // const { route } = require("./routes");
 const routes = require("./routes/index");
-const sendEmail = require("./helper/sendMail");
 
 const app = express();
 dotenv.config();
@@ -23,10 +22,8 @@ app.use(
 // Connect To DataBase
 connectToDatabase();
 
-app.get("/", async (req, res) => {
-  const result = await sendEmail("mitashil99@gmail.com");
-  console.log(result);
-  res.status(200).json({ result });
+app.get("/", (req, res) => {
+  res.send(` ⚡ Welcome to Multiverse of Madness ⚡`);
 });
 
 // Entrance

@@ -4,6 +4,7 @@ var defaultClient = SibApiV3Sdk.ApiClient.instance;
 const UserModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { createActivationToken, sendEmail } = require("../utils/common");
 
 // ---------------------- handle Register ----------------------
 exports.handleRegisterUser = async (req, res) => {
@@ -21,33 +22,25 @@ exports.handleRegisterUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user and save to database
-    const user = new UserModel({
+    const user = {
       name,
       email,
       password: hashedPassword,
       phone,
-    });
-    //
-    await user.save();
-    //     const apiKey =
-    //       defaultClient.authentications[
-    //         "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"
-    //       ];
+    };
 
-    //     apiKey.apiKey =
-    //       "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";
-    //     var apiInstance = new SibApiV3Sdk.EmailCampaignsApi();
-    //     var emailCampaigns = new SibApiV3Sdk.CreateEmailCampaign();
+    // Create a activation Token
+    const activationToken = createActivationToken(user);
 
-    //     // # Define the campaign settings\
-    // emailCampaigns.name = "Campaign sent via the API";
-    // emailCampaigns.subject = "My subject";
-    // emailCampaigns.sender = {"name": "From name", "email":"anshuman.kashyap@sendinblue.com"};
-    // emailCampaigns.type = "classic";
-    // htmlContent: 'Congratulations! You successfully sent this example campaign via the Sendinblue API.',
+    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const result = await sendEmail(user, activationUrl);
+    console.log(result);
 
     // send success message
-    return { message: "user registered successfully", status: 201 };
+    return {
+      message: `please check your email:- ${user.email} to activate your account!`,
+      status: 201,
+    };
   } catch (error) {
     console.error(error);
     return { status: 500, message: "Internal server error" };

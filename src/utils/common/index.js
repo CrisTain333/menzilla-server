@@ -1,13 +1,16 @@
+const jwt = require("jsonwebtoken");
 const Sib = require("sib-api-v3-sdk");
-
-require("dotenv").config();
-
 const client = Sib.ApiClient.instance;
-
 const apiKey = client.authentications["api-key"];
 apiKey.apiKey = process.env.API_KEY;
 
-const sendEmail = async (email) => {
+const createActivationToken = (user) => {
+  return jwt.sign(user, process.env.JWT_SECRET, {
+    expiresIn: "5m",
+  });
+};
+
+const sendEmail = async (options, activationUrl) => {
   const sender = {
     email: "sukanta.das4104@gmail.com",
     // name: 'Anjan Shomodder',
@@ -15,7 +18,7 @@ const sendEmail = async (email) => {
 
   const receivers = [
     {
-      email: email,
+      email: options?.email,
     },
   ];
 
@@ -23,16 +26,13 @@ const sendEmail = async (email) => {
 
   transactionalEmailApi
     .sendTransacEmail({
-      subject: "Verification Email For Menzilla",
+      subject: "Activate your account",
       sender,
       to: receivers,
       htmlContent: `
-			<h1>Become a {{params.role}} developer</h1>
-			<a href='https://cules-coding.vercel.app/'>Cules Coding</a>
+			<p>Hello ${options?.name}, please click on the link to activate your account</p>
+            <a href=${activationUrl} target="_blank">Activate Your Account</a>
 		`,
-      params: {
-        role: "frontend",
-      },
     })
     .then((data) => {
       return data;
@@ -42,4 +42,4 @@ const sendEmail = async (email) => {
     });
 };
 
-module.exports = sendEmail;
+module.exports = { createActivationToken, sendEmail };
