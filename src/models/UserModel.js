@@ -19,6 +19,10 @@ const DataSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    isEmailVerified: {
+      type: Boolean,
+      require: true,
+    },
     createdDate: {
       type: Date,
       default: Date.now(),
