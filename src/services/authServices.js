@@ -32,7 +32,7 @@ exports.handleRegisterUser = async (req, res) => {
     // Create a activation Token
     const activationToken = createActivationToken(user);
 
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `http://localhost:3000/auth/email-verify?token=${activationToken}`;
     const result = await sendEmail(user, activationUrl);
     console.log(result);
 
