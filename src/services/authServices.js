@@ -33,7 +33,7 @@ exports.handleRegisterUser = async (req, res) => {
     // Create a activation Token
     const activationToken = createActivationToken(user);
 
-    const activationUrl = `http://localhost:3000/auth/email-verify?token=${activationToken}`;
+    const activationUrl = `${process.env.FRONT_END_BASE_URL}/auth/email-verify?token=${activationToken}`;
     const result = await sendEmail(user, activationUrl);
     const data = await UserModel.create(user);
     // send success message
@@ -103,7 +103,12 @@ exports.loginUser = async (req, res) => {
     });
 
     // send token as response
-    return { status: 201, message: "Login successful", token };
+    return {
+      status: 201,
+      message: "Login successful",
+      token,
+      usr: { email: user?.email, name: user?.name, phone: user?.phone },
+    };
   } catch (error) {
     console.error(`${error.message}`);
     return { status: 500, message: error.toString() };

@@ -34,6 +34,7 @@ const login = async (req, res, next) => {
       status: result?.status,
       message: result?.message,
       token: result?.token,
+      user: result?.usr,
     });
   } catch (error) {
     console.log(error);

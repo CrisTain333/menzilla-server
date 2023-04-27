@@ -23,6 +23,10 @@ const DataSchema = new mongoose.Schema(
       type: Boolean,
       require: true,
     },
+    profilePicture: {
+      type: String,
+      default: "https://i.ibb.co/JHhYHC6/user.png",
+    },
     createdDate: {
       type: Date,
       default: Date.now(),
