@@ -1,7 +1,7 @@
 let SibApiV3Sdk = require("sib-api-v3-sdk");
 var defaultClient = SibApiV3Sdk.ApiClient.instance;
 // const UserModel = require("../models/UserModel");
-const UserModel = require("../models/userModel");
+const UserModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createActivationToken, sendEmail } = require("../utils/common");
