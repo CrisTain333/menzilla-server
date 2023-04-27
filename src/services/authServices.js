@@ -107,7 +107,12 @@ exports.loginUser = async (req, res) => {
       status: 201,
       message: "Login successful",
       token,
-      usr: { email: user?.email, name: user?.name, phone: user?.phone },
+      usr: {
+        email: user?.email,
+        name: user?.name,
+        phone: user?.phone,
+        profilePicture: user?.profilePicture,
+      },
     };
   } catch (error) {
     console.error(`${error.message}`);
