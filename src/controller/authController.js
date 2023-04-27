@@ -27,4 +27,17 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, verifyEmail };
+const login = async (req, res, next) => {
+  try {
+    const result = await authService.loginUser(req, res);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+module.exports = { registerUser, verifyEmail, login };

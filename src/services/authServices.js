@@ -71,3 +71,41 @@ exports.handleVerifyEmail = async (req, res) => {
 };
 
 // ---------------------- handle login ----------------------
+
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // all fields are required
+    if ((!email, !password)) {
+      return { status: 401, message: "All fields are required" };
+    }
+
+    const user = await UserModel.findOne({ email });
+    // check the user exist in Database Or Not
+    if (!user) {
+      return { message: "User Not Found", status: 404 };
+    }
+
+    if (!user?.isEmailVerified) {
+      return { message: "email not verified", status: 404 };
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    //Check User Password
+    if (!isMatch) {
+      return { status: 401, message: "invalid credential" };
+    }
+
+    // Generate Token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    // send token as response
+    return { status: 200, message: "Login successful", token };
+  } catch (error) {
+    console.error(`${error.message}`);
+    return { status: 500, message: error.toString() };
+  }
+};
