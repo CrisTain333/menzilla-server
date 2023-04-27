@@ -6,14 +6,13 @@ apiKey.apiKey = process.env.API_KEY;
 
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET, {
-    expiresIn: "5m",
+    expiresIn: "1day",
   });
 };
 
 const sendEmail = async (options, activationUrl) => {
   const sender = {
     email: "sukanta.das4104@gmail.com",
-    // name: 'Anjan Shomodder',
   };
 
   const receivers = [
@@ -32,6 +31,7 @@ const sendEmail = async (options, activationUrl) => {
       htmlContent: `
 			<p>Hello ${options?.name}, please click on the link to activate your account</p>
             <a href=${activationUrl} target="_blank">Activate Your Account</a>
+            <p>This link will expire in 24 hours</p>
 		`,
     })
     .then((data) => {

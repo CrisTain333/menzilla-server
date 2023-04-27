@@ -103,7 +103,7 @@ exports.loginUser = async (req, res) => {
     });
 
     // send token as response
-    return { status: 200, message: "Login successful", token };
+    return { status: 201, message: "Login successful", token };
   } catch (error) {
     console.error(`${error.message}`);
     return { status: 500, message: error.toString() };
