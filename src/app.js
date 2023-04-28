@@ -12,12 +12,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: "*",
-    exposedHeaders: ["Content-Disposition"],
-  })
-);
+app.use(cors());
 
 // Connect To DataBase
 connectToDatabase();
