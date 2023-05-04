@@ -7,6 +7,7 @@ const getUser = async (req, res, next) => {
       status: result?.status,
       message: result?.message,
       user: result?.user,
+      role: result?.role,
     });
   } catch (error) {
     console.log(error);
