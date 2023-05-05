@@ -3,7 +3,7 @@ const { config } = require("../config/bucket.config");
 exports.handleShopRegister = (req, res) => {
   const data = req.body;
   const file = req.file;
-  console.log(UserInfo, "line 6 from DocumentService");
+  console.log(data, "line 6 from DocumentService");
 
   const bucket = config.storage().bucket(process.env.STORAGE_BUCKET);
   const folderName = "Menzilla-storage/";
@@ -18,4 +18,5 @@ exports.handleShopRegister = (req, res) => {
   stream.on("error", (error) => {
     console.log(error);
   });
+  return { message: data };
 };

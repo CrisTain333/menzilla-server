@@ -1,5 +1,5 @@
 const shopServices = require("../services/shopServices");
-const registerShop = async (req, res) => {
+const registerShop = async (req, res, next) => {
   try {
     const result = await shopServices.handleShopRegister(req, res);
     res.send({
