@@ -42,3 +42,5 @@ const shopSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
+
+module.exports = mongoose.model("ShopModal", shopSchema);
