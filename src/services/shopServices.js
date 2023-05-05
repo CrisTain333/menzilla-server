@@ -1,6 +1,7 @@
 const { config } = require("../config/bucket.config");
 const ShopModal = require("../models/ShopModal");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { createActivationToken, sendEmail } = require("../utils/common/index");
 
 exports.handleShopRegister = async (req, res) => {
@@ -64,7 +65,7 @@ exports.handleShopRegister = async (req, res) => {
         isEmailVerified: false,
       };
 
-      const activationToken = createActivationToken(user);
+      const activationToken = createActivationToken(NewShopData);
       const activationUrl = `${process.env.FRONT_END_BASE_URL}/auth/seller-activation?token=${activationToken}`;
       const r = await sendEmail(NewShopData, activationUrl);
       let result = await ShopModal.create(NewShopData);
@@ -80,4 +81,27 @@ exports.handleShopRegister = async (req, res) => {
       message: error.toString(),
     };
   }
+};
+
+// ---------------------- handle Verify Email ----------------------
+exports.handleSellerEmailVerify = async (req, res) => {
+  const { token } = req.query;
+  const newShop = await jwt.verify(token, process.env.JWT_SECRET);
+  if (!newShop) {
+    return { message: "Invalid token", status: 400 };
+  }
+  const { email } = newShop;
+
+  // Check if the user already exists
+  const existingShop = await ShopModal.findOne({ $or: [{ email }] });
+
+  if (existingShop?.isEmailVerified) {
+    return { status: 400, message: "Email already Verified" };
+  }
+  const user = await ShopModal.findOneAndUpdate(
+    { email },
+    { isEmailVerified: true }
+  );
+
+  return { message: "user created", status: 201 };
 };
