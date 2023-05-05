@@ -133,7 +133,7 @@ exports.handleSellerLogin = async (req, res) => {
     }
 
     // Generate Token
-    const token = jwt.sign({ shopId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ shopId: shop._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
