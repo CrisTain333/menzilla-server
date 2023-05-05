@@ -36,6 +36,10 @@ const shopSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  isEmailVerified: {
+    type: Boolean,
+    require: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

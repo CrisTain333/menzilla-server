@@ -61,6 +61,7 @@ exports.handleShopRegister = async (req, res) => {
         address: shopData?.address,
         zipCode: shopData?.zipCode,
         password: hashedPassword,
+        isEmailVerified: false,
       };
 
       const activationToken = createActivationToken(user);
