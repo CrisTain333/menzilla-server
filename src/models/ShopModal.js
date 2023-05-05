@@ -43,4 +43,5 @@ const shopSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("ShopModal", shopSchema);
+const ShopModal = mongoose.model("shop", shopSchema);
+module.exports = ShopModal;

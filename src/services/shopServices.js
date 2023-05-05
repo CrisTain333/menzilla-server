@@ -1,5 +1,6 @@
 const { config } = require("../config/bucket.config");
 const ShopModal = require("../models/ShopModal");
+const bcrypt = require("bcrypt");
 
 exports.handleShopRegister = async (req, res) => {
   const shopData = req.body;
@@ -21,17 +22,23 @@ exports.handleShopRegister = async (req, res) => {
   const data = await stream.on("finish", async () => {
     const accessUrl = await fileUpload.getSignedUrl({
       action: "read",
-      expires: "03-17-2025",
+      expires: "01-01-2025",
     });
 
+    const hashedPassword = await bcrypt.hash(shopData?.password, 10);
+
     let result = await ShopModal.create({
-      email: UserInfo?.email,
-      PublicURL: accessUrl[0],
-      fileName: UserInfo?.filename,
+      name: shopData?.shopName,
+      email: shopData?.email,
+      shopProfile: accessUrl[0],
+      phoneNumber: shopData?.phone,
+      address: shopData?.address,
+      zipCode: shopData?.zipCode,
+      password: hashedPassword,
     });
     return result;
   });
   stream.end(file.buffer);
 
-  return { message: data };
+  return { status: 201, message: "shop created successfully" };
 };
