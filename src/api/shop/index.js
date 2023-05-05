@@ -8,6 +8,6 @@ const {
 const upload = require("../../middleware/upload");
 
 router.post("/register", upload.single("shopProfile"), registerShop);
-router.post("verify-email", verifySellerEmail);
+router.post("/verify-email", verifySellerEmail);
 
 module.exports = router;
