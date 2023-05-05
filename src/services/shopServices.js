@@ -1,6 +1,7 @@
 const { config } = require("../config/bucket.config");
 const ShopModal = require("../models/ShopModal");
 const bcrypt = require("bcrypt");
+const { createActivationToken, sendEmail } = require("../utils/common/index");
 
 exports.handleShopRegister = async (req, res) => {
   try {
@@ -20,7 +21,7 @@ exports.handleShopRegister = async (req, res) => {
       return { status: 400, message: "address is  required" };
     } else if (!phone) {
       return { status: 400, message: "phone is  required" };
-    } else if (!shopProfile) {
+    } else if (!file) {
       return { status: 400, message: "shop profile is  required" };
     } else if (!zipCode) {
       return { status: 400, message: "zipCode  is  required" };
@@ -52,7 +53,7 @@ exports.handleShopRegister = async (req, res) => {
 
       const hashedPassword = await bcrypt.hash(shopData?.password, 10);
 
-      let result = await ShopModal.create({
+      const NewShopData = {
         name: shopData?.shopName,
         email: shopData?.email,
         shopProfile: accessUrl[0],
@@ -60,7 +61,12 @@ exports.handleShopRegister = async (req, res) => {
         address: shopData?.address,
         zipCode: shopData?.zipCode,
         password: hashedPassword,
-      });
+      };
+
+      const activationToken = createActivationToken(user);
+      const activationUrl = `${process.env.FRONT_END_BASE_URL}/auth/seller-activation?token=${activationToken}`;
+      const r = await sendEmail(NewShopData, activationUrl);
+      let result = await ShopModal.create(NewShopData);
       return result;
     });
     stream.end(file.buffer);
