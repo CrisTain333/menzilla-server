@@ -98,7 +98,7 @@ exports.handleSellerEmailVerify = async (req, res) => {
   if (existingShop?.isEmailVerified) {
     return { status: 400, message: "Email already Verified" };
   }
-  const user = await ShopModal.findOneAndUpdate(
+  const shop = await ShopModal.findOneAndUpdate(
     { email },
     { isEmailVerified: true }
   );
