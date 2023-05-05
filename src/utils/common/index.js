@@ -2,8 +2,7 @@ const jwt = require("jsonwebtoken");
 const Sib = require("sib-api-v3-sdk");
 const client = Sib.ApiClient.instance;
 const apiKey = client.authentications["api-key"];
-apiKey.apiKey =
-  "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";
+apiKey.apiKey = process.env.API_KEY;
 
 const createActivationToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET, {
