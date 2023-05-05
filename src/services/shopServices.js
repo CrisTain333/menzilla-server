@@ -105,3 +105,46 @@ exports.handleSellerEmailVerify = async (req, res) => {
 
   return { message: "user created", status: 201 };
 };
+
+// ---------------------------- handle Login  -----------------------
+exports.handleSellerLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // all fields are required
+    if ((!email, !password)) {
+      return { status: 401, message: "All fields are required" };
+    }
+
+    const shop = await ShopModal.findOne({ email });
+    // check the user exist in Database Or Not
+    if (!shop) {
+      return { message: "Shop Details Not Found", status: 404 };
+    }
+
+    if (!shop?.isEmailVerified) {
+      return { message: "email not verified", status: 404 };
+    }
+
+    const isMatch = await bcrypt.compare(password, shop?.password);
+    //Check User Password
+    if (!isMatch) {
+      return { status: 401, message: "invalid credential" };
+    }
+
+    // Generate Token
+    const token = jwt.sign({ shopId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    // send token as response
+    return {
+      status: 201,
+      message: "Login successful",
+      token,
+    };
+  } catch (error) {
+    console.error(`${error.message}`);
+    return { status: 500, message: error.toString() };
+  }
+};
