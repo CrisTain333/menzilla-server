@@ -15,12 +15,12 @@ const createActivationToken = (user) => {
 const sendEmail = async (options, activationUrl) => {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    host: "smtp-relay.sendinblue.com",
+    host: process.env.SMT_HOST,
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "mitashil99@gmail.com", // generated ethereal user
-      pass: "UT5hDwKcYZ4zBVCS", // generated ethereal password
+      user: process.env.SMT_USER, // generated ethereal user
+      pass: process.env.SMT_PASSWORD, // generated ethereal password
     },
   });
 
