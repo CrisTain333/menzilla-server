@@ -12,6 +12,8 @@ const createActivationToken = (user) => {
 
 const sendEmail = async (options, activationUrl) => {
   console.log("send email function running");
+  console.log(options);
+  console.log(activationUrl);
   const sender = {
     email: "sukanta.das4104@gmail.com",
   };
