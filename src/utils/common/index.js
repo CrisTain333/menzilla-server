@@ -26,7 +26,7 @@ const sendEmail = async (options, activationUrl) => {
 
   await transporter
     .sendMail({
-      from: "menzilla@merry.pink", // sender address
+      from: "sukanta.das4104@gmail.com", // sender address
       to: options?.email, // list of receivers
       subject: "Activate your account", // Subject line
       //   text: "Hello world?", // plain text body
