@@ -292,7 +292,6 @@ const sendEmail = async (options, activationUrl) => {
 	background: #FEFEFE;
 	color: #585858;
 ">
-    <!-- Preivew text -->
     <span class="preheader"
         style="display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;border-collapse: collapse;border: 0px;"></span>
     <!-- Carpool logo -->
