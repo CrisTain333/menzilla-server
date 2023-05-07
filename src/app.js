@@ -17,7 +17,7 @@ app.use(cors());
 // Connect To DataBase
 connectToDatabase();
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   res.send(` ⚡ Welcome to Multiverse of Madness ⚡`);
 });
 
