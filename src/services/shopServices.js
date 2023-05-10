@@ -156,8 +156,33 @@ exports.handleGetSeller = async (req, res) => {
 
     const id = jwt.verify(token, process.env.JWT_SECRET);
     const seller = await ShopModal.findById(id.shopId);
+    const {
+      _id,
+      name,
+      email,
+      address,
+      phoneNumber,
+      role,
+      shopProfile,
+      zipCode,
+      isEmailVerified,
+    } = seller;
 
-    return { status: 200, message: "success", seller };
+    return {
+      status: 200,
+      message: "success",
+      seller: {
+        _id,
+        name,
+        email,
+        address,
+        phoneNumber,
+        role,
+        shopProfile,
+        zipCode,
+        isEmailVerified,
+      },
+    };
   } catch (error) {
     console.error(`${error.message}`);
     return { status: 500, message: error.toString() };
