@@ -5,11 +5,13 @@ const {
   registerShop,
   verifySellerEmail,
   sellerLogin,
+  getSeller,
 } = require("../../controller/shopController");
 const upload = require("../../middleware/upload");
 
 router.post("/register", upload.single("shopProfile"), registerShop);
 router.post("/login", sellerLogin);
 router.post("/verify-email", verifySellerEmail);
+router.get("/seller", getSeller);
 
 module.exports = router;
