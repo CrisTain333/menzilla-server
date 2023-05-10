@@ -149,4 +149,17 @@ exports.handleSellerLogin = async (req, res) => {
   }
 };
 
-exports.handleGetSeller = async (req, res) => {};
+exports.handleGetSeller = async (req, res) => {
+  try {
+    const auth_Token = req.header("Authorization");
+    const token = auth_Token.split(" ")[1];
+
+    const id = jwt.verify(token, process.env.JWT_SECRET);
+    const seller = await ShopModal.findById(id.shopId);
+
+    return { status: 200, message: "success", seller };
+  } catch (error) {
+    console.error(`${error.message}`);
+    return { status: 500, message: error.toString() };
+  }
+};
