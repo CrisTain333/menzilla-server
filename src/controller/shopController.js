@@ -38,5 +38,17 @@ const sellerLogin = async (req, res, next) => {
     next(error);
   }
 };
-const getSeller = async (req, res) => {};
+const getSeller = async (req, res, next) => {
+  try {
+    const result = await shopServices.handleGetSeller(req, res);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+      seller: result?.seller,
+    });
+  } catch (error) {
+    res.json({ status: 500, message: error?.message });
+    next(error);
+  }
+};
 module.exports = { registerShop, verifySellerEmail, sellerLogin, getSeller };
