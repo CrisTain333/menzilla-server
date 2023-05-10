@@ -39,3 +39,5 @@ const sellerLogin = async (req, res, next) => {
   }
 };
 module.exports = { registerShop, verifySellerEmail, sellerLogin };
+
+const getSeller = async (req, res) => {};
