@@ -166,6 +166,7 @@ exports.handleGetSeller = async (req, res) => {
       shopProfile,
       zipCode,
       isEmailVerified,
+      createdAt,
     } = seller;
 
     return {
@@ -181,6 +182,7 @@ exports.handleGetSeller = async (req, res) => {
         shopProfile,
         zipCode,
         isEmailVerified,
+        createdAt,
       },
     };
   } catch (error) {
