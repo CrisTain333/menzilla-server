@@ -67,7 +67,13 @@ exports.handleShopRegister = async (req, res) => {
 
       const activationToken = createActivationToken(NewShopData);
       const activationUrl = `${process.env.FRONT_END_BASE_URL}/auth/seller-activation?token=${activationToken}`;
-      const r = await sendEmail(NewShopData, activationUrl);
+      try {
+        await sendEmail(NewShopData, activationUrl);
+        console.log("email sended");
+      } catch (error) {
+        console.log(error?.message);
+        console.log("email send fail");
+      }
       let result = await ShopModal.create(NewShopData);
       return result;
     });
