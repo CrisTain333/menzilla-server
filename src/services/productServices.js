@@ -4,7 +4,9 @@ const ShopModal = require("../models/ShopModal");
 
 exports.createProductHandler = async (req, res) => {
   const productData = req.body;
-  const files = req.file;
+  console.log(productData);
+  const files = req.files;
+  console.log(files);
 
   const bucket = config.storage().bucket(process.env.STORAGE_BUCKET);
   const folderName = "Menzilla-storage/products/";
@@ -23,7 +25,7 @@ exports.createProductHandler = async (req, res) => {
         const options = {
           destination: destination,
           metadata: {
-            contentType: file.mimetype,
+            contentType: `multipart/form-data`,
           },
         };
         await bucket.upload(file.buffer, options);
@@ -41,13 +43,17 @@ exports.createProductHandler = async (req, res) => {
 
       await ProductModal.create(productData);
 
-      return { status: 201, message: "Product Create Successful" };
+      return {
+        status: 201,
+        message: "Product Create Successful",
+      };
     }
   } catch (error) {
     console.log(error);
     return {
       status: 500,
       message: error.toString(),
+      data: req?.body,
     };
   }
 };
