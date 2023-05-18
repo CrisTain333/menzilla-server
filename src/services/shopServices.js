@@ -89,7 +89,7 @@ exports.handleShopRegister = async (req, res) => {
   }
 };
 
-// ---------------------- handle Verify Email ----------------------
+// ---------------------- handle Verify Email ---------------------
 exports.handleSellerEmailVerify = async (req, res) => {
   const { token } = req.query;
   const newShop = await jwt.verify(token, process.env.JWT_SECRET);
@@ -104,10 +104,7 @@ exports.handleSellerEmailVerify = async (req, res) => {
   if (existingShop?.isEmailVerified) {
     return { status: 400, message: "Email already Verified" };
   }
-  const shop = await ShopModal.findOneAndUpdate(
-    { email },
-    { isEmailVerified: true }
-  );
+  await ShopModal.findOneAndUpdate({ email }, { isEmailVerified: true });
 
   return { message: "user created", status: 201 };
 };
