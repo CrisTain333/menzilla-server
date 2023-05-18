@@ -34,7 +34,7 @@ exports.handleShopRegister = async (req, res) => {
     }
 
     const bucket = config.storage().bucket(process.env.STORAGE_BUCKET);
-    const folderName = "Menzilla-storage/";
+    const folderName = "Menzilla-storage/shop";
     const fileUpload = bucket.file(folderName + file.originalname);
 
     const stream = fileUpload.createWriteStream({
