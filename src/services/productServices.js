@@ -21,26 +21,18 @@ exports.createProductHandler = async (req, res) => {
 
       uploadMultipleFiles(files)
         .then((urls) => {
-          console.log("Uploaded URLs:", urls);
-          // Handle the URLs as per your application's needs
-          // res.status(200).json({ urls });
-
-          return {
-            status: 201,
-            message: "Product Create Successful",
-          };
+          productData.images = urls;
         })
         .catch((error) => {
-          console.error("Error:", error);
-          // Handle the error appropriately
-          return {
-            status: 500,
-            message: error.toString(),
-            data: req?.body,
-          };
+          console.error("Error: From productService Line : 40", error);
         });
+      productData.shop = shop;
+      await ProductModal.create(productData);
 
-      // await ProductModal.create(productData);
+      return {
+        status: 201,
+        message: "Product Create Successful",
+      };
     }
   } catch (error) {
     console.log(error);
