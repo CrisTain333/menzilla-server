@@ -28,8 +28,8 @@ exports.createProductHandler = async (req, res) => {
             contentType: `multipart/form-data`,
           },
         };
-        await bucket.upload(file.buffer, options);
-
+        const fileBuffer = Uint8Array.from(file.buffer);
+        await bucket.upload(fileBuffer, options);
         const [url] = await bucket.file(destination).getSignedUrl({
           action: "read",
           expires: "03-01-2500",
