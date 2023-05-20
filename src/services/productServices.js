@@ -1,15 +1,9 @@
-const { config } = require("../config/bucket.config");
 const ProductModal = require("../models/ProductModal");
 const ShopModal = require("../models/ShopModal");
 
 exports.createProductHandler = async (req, res) => {
   const productData = req.body;
-  console.log(productData);
   const files = req.files;
-  console.log(files);
-
-  const bucket = config.storage().bucket(process.env.STORAGE_BUCKET);
-  const folderName = "Menzilla-storage/";
 
   try {
     const shopId = productData.shopId;
