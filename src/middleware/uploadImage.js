@@ -2,9 +2,9 @@ const cloudinary = require("cloudinary").v2;
 
 // Configuration
 cloudinary.config({
-  cloud_name: "menzilla",
-  api_key: "784956655754399",
-  api_secret: "2X--LsJJ30AvZredHBRJX7B1iAE",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
 });
 
 async function uploadMultipleFiles(files) {
