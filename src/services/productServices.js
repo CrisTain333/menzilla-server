@@ -32,7 +32,7 @@ exports.createProductHandler = async (req, res) => {
 
         const [url] = await bucket.file(destination).getSignedUrl({
           action: "read",
-          expires: "03-01-2500", // Set an appropriate expiry date or duration
+          expires: "03-01-2500",
         });
 
         fileUrls.push(url);
