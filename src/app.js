@@ -9,10 +9,12 @@ const routes = require("./routes/index");
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 8000;
+const path = require("path");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Connect To DataBase
 connectToDatabase();
