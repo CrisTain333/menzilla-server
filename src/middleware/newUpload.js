@@ -33,4 +33,4 @@ let newUploadSystem = multer({
   },
 });
 
-exports.newUploadSystem = multer({ storage: storage });
+module.exports = newUploadSystem;

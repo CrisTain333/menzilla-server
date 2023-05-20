@@ -17,28 +17,29 @@ exports.createProductHandler = async (req, res) => {
     if (!shop) {
       return { message: "Shop Id is invalid!", status: 400 };
     } else {
-      const fileUrls = [];
-      // Upload each file to Firebase Storage and get the download URLs
-      for (const file of files) {
-        const filename = Date.now() + "-" + file.originalname;
-        const destination = folderName + filename;
-        const options = {
-          destination: destination,
-          metadata: {
-            contentType: `multipart/form-data`,
-          },
-        };
-        const fileBuffer = Uint8Array.from(file.buffer);
-        await bucket.upload(fileBuffer, options);
-        const [url] = await bucket.file(destination).getSignedUrl({
-          action: "read",
-          expires: "03-01-2500",
-        });
+      //   const fileUrls = [];
+      //   // Upload each file to Firebase Storage and get the download URLs
+      //   for (const file of files) {
+      //     const filename = Date.now() + "-" + file.originalname;
+      //     const destination = folderName + filename;
+      //     const options = {
+      //       destination: destination,
+      //       metadata: {
+      //         contentType: `multipart/form-data`,
+      //       },
+      //     };
+      //     const fileBuffer = Uint8Array.from(file.buffer);
+      //     await bucket.upload(fileBuffer, options);
+      //     const [url] = await bucket.file(destination).getSignedUrl({
+      //       action: "read",
+      //       expires: "03-01-2500",
+      //     });
 
-        fileUrls.push(url);
-      }
+      //     fileUrls.push(url);
+      //   }
+      const imageUrls = files.map((file) => `${file.filename}`);
 
-      productData.images = fileUrls;
+      productData.images = imageUrls;
       productData.shop = shop;
 
       await ProductModal.create(productData);
