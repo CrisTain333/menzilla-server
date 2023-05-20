@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const colors = require("colors");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const connectToDatabase = require("./Database/ConnectToDatabase");
 // const { route } = require("./routes");
 const routes = require("./routes/index");
@@ -12,9 +13,11 @@ const PORT = process.env.PORT || 8000;
 const path = require("path");
 
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Serve uploaded images
+app.use("/", express.static("uploads"));
 
 // Connect To DataBase
 connectToDatabase();
