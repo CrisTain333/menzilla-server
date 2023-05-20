@@ -9,7 +9,7 @@ exports.createProductHandler = async (req, res) => {
   console.log(files);
 
   const bucket = config.storage().bucket(process.env.STORAGE_BUCKET);
-  const folderName = "Menzilla-storage/products/";
+  const folderName = "Menzilla-storage/";
 
   try {
     const shopId = productData.shopId;
