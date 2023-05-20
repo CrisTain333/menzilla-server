@@ -19,19 +19,29 @@ exports.createProductHandler = async (req, res) => {
       // productData.images = imageUrls;
       // productData.shop = shop;
 
-      uploadMultipleFiles(files)
-        .then((urls) => {
-          productData.images = urls;
-        })
-        .catch((error) => {
-          console.error("Error: From productService Line : 40", error);
-        });
       productData.shop = shop;
+      const result = await uploadMultipleFiles(files);
+      productData.images = result;
       await ProductModal.create(productData);
+
+      // .then((urls) => {
+      //   console.log(urls);
+      //   if (urls !== []) {
+      //     productData.images = urls;
+      //     const saveData = async () => {
+      //       await ProductModal.create(productData);
+      //     };
+      //     saveData();
+      //   }
+      // })
+      // .catch((error) => {
+      //   console.error("Error: From productService Line : 40", error);
+      // });
 
       return {
         status: 201,
         message: "Product Create Successful",
+        data: result,
       };
     }
   } catch (error) {
