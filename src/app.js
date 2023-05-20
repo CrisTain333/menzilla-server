@@ -17,13 +17,14 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // Serve uploaded images
-app.use("/", express.static("uploads"));
+app.use(express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 // Connect To DataBase
 connectToDatabase();
 
 app.get("/", async (req, res) => {
-  res.send(` ⚡ Welcome to Multiverse of Madness ⚡`);
+  res.send(`⚡ Welcome to Multiverse of Madness ⚡`);
 });
 
 // Entrance

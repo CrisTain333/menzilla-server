@@ -1,13 +1,35 @@
 const multer = require("multer");
 
-const storage = multer.diskStorage({
-  destination: function (req, res, cb) {
-    cb(null, "uploads/");
+let storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./src/uploads/");
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const filename = file.originalname.split(".")[0];
-    cb(null, filename + "-" + uniqueSuffix + ".png");
+  filename: (req, file, cb) => {
+    const fileName = Date.now() + "_" + file.originalname;
+    file.originalname = fileName;
+    cb(null, fileName);
+  },
+});
+
+let newUploadSystem = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5 MB
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.fieldname === "images") {
+      if (
+        file.mimetype === "image/jpg" ||
+        file.mimetype === "image/jpeg" ||
+        file.mimetype === "image/png" ||
+        file.mimetype === "application/pdf" ||
+        file.mimetype === "application/docx"
+      ) {
+        cb(null, true);
+      } else {
+        cb(new Error("only .jpg .jpeg .png .pdf .docx are allowed"));
+      }
+    }
   },
 });
 
