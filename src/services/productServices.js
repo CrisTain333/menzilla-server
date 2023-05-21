@@ -48,3 +48,24 @@ exports.createProductHandler = async (req, res) => {
     };
   }
 };
+
+exports.getProducts = async (req, res) => {
+  try {
+    const { sellerId } = req.query;
+    if (!sellerId) {
+      return {
+        status: 500,
+        message: "seller id is required",
+      };
+    }
+    const products = await ProductModal.find({ shopId: sellerId });
+    return { message: "ok", status: 200, data: products };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      message: error.toString(),
+      data: req?.body,
+    };
+  }
+};
