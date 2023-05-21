@@ -48,3 +48,9 @@ exports.createProductHandler = async (req, res) => {
     };
   }
 };
+
+exports.getProducts = async (req, res) => {
+  const { sellerId } = req.query;
+
+  return { message: "ok", status: 200, data: sellerId };
+};
