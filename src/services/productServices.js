@@ -58,7 +58,7 @@ exports.getProducts = async (req, res) => {
         message: "seller id is required",
       };
     }
-    const products = await ProductModal.findById({ shopId: sellerId });
+    const products = await ProductModal.find({ shopId: sellerId });
     return { message: "ok", status: 200, data: products };
   } catch (error) {
     console.log(error);
