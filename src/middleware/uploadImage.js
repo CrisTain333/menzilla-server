@@ -13,7 +13,9 @@ async function uploadMultipleFiles(files) {
 
     // Loop through the files and upload each one
     for (const file of files) {
-      const uploadResult = await cloudinary.uploader.upload(file.path);
+      const uploadResult = await cloudinary.uploader.upload(file.path, {
+        folder: "Menzilla/Products",
+      });
       uploadResults.push(uploadResult.secure_url);
     }
 
