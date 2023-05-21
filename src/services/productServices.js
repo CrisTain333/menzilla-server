@@ -1,3 +1,4 @@
+// const { uploadMultipleFiles } = require("../middleware/uploadImage");
 const { uploadMultipleFiles } = require("../middleware/uploadImage");
 const ProductModal = require("../models/ProductModal");
 const ShopModal = require("../models/ShopModal");
@@ -5,6 +6,7 @@ const ShopModal = require("../models/ShopModal");
 exports.createProductHandler = async (req, res) => {
   const productData = req.body;
   const files = req.files;
+  console.log(productData);
 
   try {
     const shopId = productData.shopId;
@@ -12,13 +14,6 @@ exports.createProductHandler = async (req, res) => {
     if (!shop) {
       return { message: "Shop Id is invalid!", status: 400 };
     } else {
-      // const imageUrls = files.map(
-      //   (file) => `${req.protocol}://${req.hostname}/uploads/${file.filename}`
-      // );
-
-      // productData.images = imageUrls;
-      // productData.shop = shop;
-
       productData.shop = shop;
       const result = await uploadMultipleFiles(files);
       productData.images = result;
