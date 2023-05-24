@@ -1,4 +1,5 @@
 // const { uploadMultipleFiles } = require("../middleware/uploadImage");
+const { ObjectId } = require("mongodb");
 const { uploadMultipleFiles } = require("../middleware/uploadImage");
 const ProductModal = require("../models/ProductModal");
 const ShopModal = require("../models/ShopModal");
@@ -70,4 +71,13 @@ exports.getProducts = async (req, res) => {
   }
 };
 
-exports.deleteProductFromDb = async (req) => {};
+exports.deleteProductFromDb = async (req) => {
+  const { productId } = req.query;
+  const filter = { _id: new ObjectId(productId) };
+
+  await ProductModal.findByIdAndDelete(filter);
+  return {
+    status: 200,
+    message: "Product Deleted Successful",
+  };
+};
