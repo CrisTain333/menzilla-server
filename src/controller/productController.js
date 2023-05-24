@@ -31,7 +31,7 @@ const getShopProducts = async (req, res, next) => {
 // Get all Products Of Shop
 const deleteProduct = async (req, res, next) => {
   try {
-    const result = await productServices.getProducts(req, res);
+    const result = await productServices.deleteProductFromDb(req);
     res.send({
       status: result?.status,
       message: result?.message,

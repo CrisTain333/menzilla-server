@@ -69,3 +69,5 @@ exports.getProducts = async (req, res) => {
     };
   }
 };
+
+exports.deleteProductFromDb = async (req) => {};
