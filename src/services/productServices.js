@@ -80,3 +80,5 @@ exports.deleteProductFromDb = async (req) => {
     message: "Product Deleted Successful",
   };
 };
+
+exports.getAllProductFromDb = async () => {};
