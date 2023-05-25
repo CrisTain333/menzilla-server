@@ -8,8 +8,9 @@ const {
   getSeller,
 } = require("../../controller/shopController");
 const upload = require("../../middleware/upload");
+const newUploadSystem = require("../../middleware/newUpload");
 
-router.post("/register", upload.single("shopProfile"), registerShop);
+router.post("/register", newUploadSystem.single("shopProfile"), registerShop);
 router.post("/login", sellerLogin);
 router.post("/verify-email", verifySellerEmail);
 router.get("/seller", getSeller);
