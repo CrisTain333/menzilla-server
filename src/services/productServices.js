@@ -20,20 +20,6 @@ exports.createProductHandler = async (req, res) => {
       productData.images = result;
       await ProductModal.create(productData);
 
-      // .then((urls) => {
-      //   console.log(urls);
-      //   if (urls !== []) {
-      //     productData.images = urls;
-      //     const saveData = async () => {
-      //       await ProductModal.create(productData);
-      //     };
-      //     saveData();
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.error("Error: From productService Line : 40", error);
-      // });
-
       return {
         status: 201,
         message: "Product Create Successful",
@@ -52,15 +38,28 @@ exports.createProductHandler = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
   try {
+    const limit = 5;
     const { sellerId } = req.query;
+    const page = parseInt(req.query.page) || 1;
+
+    const skip = (page - 1) * limit;
     if (!sellerId) {
       return {
         status: 500,
         message: "seller id is required",
       };
     }
-    const products = await ProductModal.find({ shopId: sellerId });
-    return { message: "ok", status: 200, data: products };
+    const count = await ProductModal.countDocuments();
+    const products = await ProductModal.find({ shopId: sellerId })
+      .skip(skip)
+      .limit(parseInt(limit));
+    return {
+      message: "ok",
+      status: 200,
+      data: products,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page),
+    };
   } catch (error) {
     console.log(error);
     return {
@@ -79,5 +78,14 @@ exports.deleteProductFromDb = async (req) => {
   return {
     status: 200,
     message: "Product Deleted Successful",
+  };
+};
+
+exports.getAllProductFromDb = async () => {
+  const result = await ProductModal.find({});
+  return {
+    status: 200,
+    message: "ok",
+    data: result,
   };
 };

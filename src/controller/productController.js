@@ -21,6 +21,8 @@ const getShopProducts = async (req, res, next) => {
       status: result?.status,
       message: result?.message,
       data: result?.data,
+      totalPages: result?.totalPages,
+      currentPage: result?.currentPage,
     });
   } catch (error) {
     res.json({ status: 500, message: error?.message });
@@ -28,7 +30,7 @@ const getShopProducts = async (req, res, next) => {
   }
 };
 
-// Get all Products Of Shop
+// delete product from shop
 const deleteProduct = async (req, res, next) => {
   try {
     const result = await productServices.deleteProductFromDb(req);
@@ -41,5 +43,24 @@ const deleteProduct = async (req, res, next) => {
     next(error);
   }
 };
+// Get all Products
+const getAllProducts = async (req, res, next) => {
+  try {
+    const result = await productServices.getAllProductFromDb();
+    res.send({
+      status: result?.status,
+      message: result?.message,
+      data: result?.data,
+    });
+  } catch (error) {
+    res.json({ status: 500, message: error?.message });
+    next(error);
+  }
+};
 
-module.exports = { createProduct, getShopProducts, deleteProduct };
+module.exports = {
+  createProduct,
+  getShopProducts,
+  deleteProduct,
+  getAllProducts,
+};

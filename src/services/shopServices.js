@@ -3,6 +3,7 @@ const ShopModal = require("../models/ShopModal");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createActivationToken, sendEmail } = require("../utils/common/index");
+const { uploadMultipleFiles } = require("../middleware/uploadImage");
 
 exports.handleShopRegister = async (req, res) => {
   try {
@@ -32,53 +33,32 @@ exports.handleShopRegister = async (req, res) => {
     if (existingUser) {
       return { status: 400, message: "Email already in use" };
     }
+    const shopImage = [file];
+    const imageUrl = await uploadMultipleFiles(shopImage);
 
-    const bucket = config.storage().bucket(process.env.STORAGE_BUCKET);
-    const folderName = "Menzilla-storage/shop";
-    const fileUpload = bucket.file(folderName + file.originalname);
+    const hashedPassword = await bcrypt.hash(shopData?.password, 10);
 
-    const stream = fileUpload.createWriteStream({
-      metadata: {
-        contentType: file.mimetype,
-      },
-    });
+    const NewShopData = {
+      name: shopData?.shopName,
+      email: shopData?.email,
+      shopProfile: imageUrl[0],
+      phoneNumber: shopData?.phone,
+      address: shopData?.address,
+      zipCode: shopData?.zipCode,
+      password: hashedPassword,
+      isEmailVerified: false,
+    };
 
-    stream.on("error", (error) => {
-      console.log(error);
-    });
-    const data = await stream.on("finish", async () => {
-      const accessUrl = await fileUpload.getSignedUrl({
-        action: "read",
-        expires: "01-01-2025",
-      });
-
-      const hashedPassword = await bcrypt.hash(shopData?.password, 10);
-
-      const NewShopData = {
-        name: shopData?.shopName,
-        email: shopData?.email,
-        shopProfile: accessUrl[0],
-        phoneNumber: shopData?.phone,
-        address: shopData?.address,
-        zipCode: shopData?.zipCode,
-        password: hashedPassword,
-        isEmailVerified: false,
-      };
-
-      const activationToken = createActivationToken(NewShopData);
-      const activationUrl = `${process.env.FRONT_END_BASE_URL}/auth/seller-activation?token=${activationToken}`;
-      try {
-        await sendEmail(NewShopData, activationUrl);
-        console.log("email sended");
-      } catch (error) {
-        console.log(error?.message);
-        console.log("email send fail");
-      }
-      let result = await ShopModal.create(NewShopData);
-      return result;
-    });
-    stream.end(file.buffer);
-
+    const activationToken = createActivationToken(NewShopData);
+    const activationUrl = `${process.env.FRONT_END_BASE_URL}/auth/seller-activation?token=${activationToken}`;
+    try {
+      await sendEmail(NewShopData, activationUrl);
+      console.log("email sended");
+    } catch (error) {
+      console.log(error?.message);
+      console.log("email send fail");
+    }
+    await ShopModal.create(NewShopData);
     return { status: 201, message: "shop created successfully" };
   } catch (error) {
     console.log(error);
