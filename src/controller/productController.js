@@ -30,7 +30,7 @@ const getShopProducts = async (req, res, next) => {
   }
 };
 
-// Get all Products Of Shop
+// delete product from shop
 const deleteProduct = async (req, res, next) => {
   try {
     const result = await productServices.deleteProductFromDb(req);
@@ -43,7 +43,7 @@ const deleteProduct = async (req, res, next) => {
     next(error);
   }
 };
-// Get all Products Of Shop
+// Get all Products
 const getAllProducts = async (req, res, next) => {
   try {
     const result = await productServices.getAllProductFromDb();

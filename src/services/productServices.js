@@ -81,4 +81,11 @@ exports.deleteProductFromDb = async (req) => {
   };
 };
 
-exports.getAllProductFromDb = async () => {};
+exports.getAllProductFromDb = async () => {
+  const result = await ProductModal.find({});
+  return {
+    status: 200,
+    message: "ok",
+    data: result,
+  };
+};
