@@ -7,7 +7,6 @@ const {
   sellerLogin,
   getSeller,
 } = require("../../controller/shopController");
-const upload = require("../../middleware/upload");
 const newUploadSystem = require("../../middleware/newUpload");
 
 router.post("/register", newUploadSystem.single("shopProfile"), registerShop);

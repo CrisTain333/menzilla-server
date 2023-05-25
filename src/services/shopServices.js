@@ -58,9 +58,7 @@ exports.handleShopRegister = async (req, res) => {
       console.log(error?.message);
       console.log("email send fail");
     }
-    let result = await ShopModal.create(NewShopData);
-    return result;
-
+    await ShopModal.create(NewShopData);
     return { status: 201, message: "shop created successfully" };
   } catch (error) {
     console.log(error);
