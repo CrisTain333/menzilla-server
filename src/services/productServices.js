@@ -40,14 +40,25 @@ exports.getProducts = async (req, res) => {
   try {
     const limit = 5;
     const { sellerId } = req.query;
+
+    const skip = (page - 1) * limit;
     if (!sellerId) {
       return {
         status: 500,
         message: "seller id is required",
       };
     }
-    const products = await ProductModal.find({ shopId: sellerId }).limit(limit);
-    return { message: "ok", status: 200, data: products };
+    const count = await ProductModal.countDocuments();
+    const products = await ProductModal.find({ shopId: sellerId })
+      .skip(skip)
+      .limit(parseInt(limit));
+    return {
+      message: "ok",
+      status: 200,
+      data: products,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page),
+    };
   } catch (error) {
     console.log(error);
     return {
