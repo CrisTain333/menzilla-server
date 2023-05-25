@@ -38,6 +38,7 @@ exports.createProductHandler = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
   try {
+    const limit = 5;
     const { sellerId } = req.query;
     if (!sellerId) {
       return {
@@ -45,7 +46,7 @@ exports.getProducts = async (req, res) => {
         message: "seller id is required",
       };
     }
-    const products = await ProductModal.find({ shopId: sellerId });
+    const products = await ProductModal.find({ shopId: sellerId }).limit(limit);
     return { message: "ok", status: 200, data: products };
   } catch (error) {
     console.log(error);
