@@ -40,6 +40,7 @@ exports.getProducts = async (req, res) => {
   try {
     const limit = 5;
     const { sellerId } = req.query;
+    const page = parseInt(req.query.page) || 1;
 
     const skip = (page - 1) * limit;
     if (!sellerId) {
