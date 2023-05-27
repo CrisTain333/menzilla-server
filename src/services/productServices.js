@@ -49,7 +49,9 @@ exports.getProducts = async (req, res) => {
         message: "seller id is required",
       };
     }
-    const count = await ProductModal.countDocuments();
+    const count = await ProductModal.find({
+      shopId: sellerId,
+    }).countDocuments();
     const products = await ProductModal.find({ shopId: sellerId })
       .skip(skip)
       .limit(parseInt(limit));
