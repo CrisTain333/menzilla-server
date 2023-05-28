@@ -13,5 +13,6 @@ router.post("/register", newUploadSystem.single("shopProfile"), registerShop);
 router.post("/login", sellerLogin);
 router.post("/verify-email", verifySellerEmail);
 router.get("/seller", getSeller);
+// router.get('/:id')
 
 module.exports = router;
