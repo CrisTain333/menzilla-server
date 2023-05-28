@@ -38,7 +38,7 @@ exports.createProductHandler = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
   try {
-    const limit = 5;
+    const limit = 6;
     const { sellerId } = req.query;
     const page = parseInt(req.query.page) || 1;
 
