@@ -134,28 +134,11 @@ exports.handleSellerLogin = async (req, res) => {
 
 exports.handleGetSeller = async (req, res) => {
   try {
-    const auth_Token = req.header("Authorization");
-    const token = auth_Token.split(" ")[1];
+    const { shopId } = req.query;
 
-    const id = jwt.verify(token, process.env.JWT_SECRET);
-    const seller = await ShopModal.findById(id.shopId);
-    const {
-      _id,
-      name,
-      email,
-      address,
-      phoneNumber,
-      role,
-      shopProfile,
-      zipCode,
-      isEmailVerified,
-      createdAt,
-    } = seller;
-
-    return {
-      status: 200,
-      message: "success",
-      seller: {
+    if (shopId) {
+      const seller = await ShopModal.findById(shopId);
+      const {
         _id,
         name,
         email,
@@ -166,8 +149,60 @@ exports.handleGetSeller = async (req, res) => {
         zipCode,
         isEmailVerified,
         createdAt,
-      },
-    };
+      } = seller;
+
+      return {
+        status: 200,
+        message: "success",
+        seller: {
+          _id,
+          name,
+          email,
+          address,
+          phoneNumber,
+          role,
+          shopProfile,
+          zipCode,
+          isEmailVerified,
+          createdAt,
+        },
+      };
+    } else {
+      const auth_Token = req.header("Authorization");
+      const token = auth_Token.split(" ")[1];
+
+      const id = jwt.verify(token, process.env.JWT_SECRET);
+      const seller = await ShopModal.findById(id.shopId);
+      const {
+        _id,
+        name,
+        email,
+        address,
+        phoneNumber,
+        role,
+        shopProfile,
+        zipCode,
+        isEmailVerified,
+        createdAt,
+      } = seller;
+
+      return {
+        status: 200,
+        message: "success",
+        seller: {
+          _id,
+          name,
+          email,
+          address,
+          phoneNumber,
+          role,
+          shopProfile,
+          zipCode,
+          isEmailVerified,
+          createdAt,
+        },
+      };
+    }
   } catch (error) {
     console.error(`${error.message}`);
     return { status: 500, message: error.toString() };
