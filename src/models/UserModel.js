@@ -35,6 +35,15 @@ const DataSchema = new mongoose.Schema(
       type: String,
       default: "user",
     },
+    address1: {
+      type: String,
+    },
+    address2: {
+      type: String,
+    },
+    zipCode: {
+      type: String,
+    },
   },
   { versionKey: false }
 );

@@ -41,7 +41,6 @@ exports.getProducts = async (req, res) => {
     const limit = 6;
     const { sellerId } = req.query;
     const page = parseInt(req.query.page) || 1;
-
     const skip = (page - 1) * limit;
     if (!sellerId) {
       return {
@@ -89,5 +88,14 @@ exports.getAllProductFromDb = async () => {
     status: 200,
     message: "ok",
     data: result,
+  };
+};
+
+exports.previewShopProducts = async (id) => {
+  const products = await ProductModal.find({ shopId: id });
+  return {
+    message: "success",
+    status: 200,
+    data: products,
   };
 };
