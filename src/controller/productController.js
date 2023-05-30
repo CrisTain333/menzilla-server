@@ -58,9 +58,25 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
+const getPreviewShopProducts = async (req, res, next) => {
+  try {
+    const id = req.query.shopID;
+    const result = await productServices.previewShopProducts(id);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+      data: result?.data,
+    });
+  } catch (error) {
+    res.json({ status: 500, message: error?.message });
+    next(error);
+  }
+};
+
 module.exports = {
   createProduct,
   getShopProducts,
   deleteProduct,
   getAllProducts,
+  getPreviewShopProducts,
 };

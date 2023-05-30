@@ -40,38 +40,27 @@ exports.getProducts = async (req, res) => {
   try {
     const limit = 6;
     const { sellerId } = req.query;
-    const page = req.query.page;
-
-    if (!page) {
-      const products = await ProductModal.find({ shopId: sellerId });
+    const page = parseInt(req.query.page) || 1;
+    const skip = (page - 1) * limit;
+    if (!sellerId) {
       return {
-        message: "ok",
-        status: 200,
-        data: products,
-      };
-    } else {
-      const page = parseInt(req.query.page) || 1;
-      const skip = (page - 1) * limit;
-      if (!sellerId) {
-        return {
-          status: 500,
-          message: "seller id is required",
-        };
-      }
-      const count = await ProductModal.find({
-        shopId: sellerId,
-      }).countDocuments();
-      const products = await ProductModal.find({ shopId: sellerId })
-        .skip(skip)
-        .limit(parseInt(limit));
-      return {
-        message: "ok",
-        status: 200,
-        data: products,
-        totalPages: Math.ceil(count / limit),
-        currentPage: parseInt(page),
+        status: 500,
+        message: "seller id is required",
       };
     }
+    const count = await ProductModal.find({
+      shopId: sellerId,
+    }).countDocuments();
+    const products = await ProductModal.find({ shopId: sellerId })
+      .skip(skip)
+      .limit(parseInt(limit));
+    return {
+      message: "ok",
+      status: 200,
+      data: products,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page),
+    };
   } catch (error) {
     console.log(error);
     return {
@@ -99,5 +88,14 @@ exports.getAllProductFromDb = async () => {
     status: 200,
     message: "ok",
     data: result,
+  };
+};
+
+exports.previewShopProducts = async (id) => {
+  const products = await ProductModal.find({ shopId: id });
+  return {
+    message: "success",
+    status: 200,
+    data: products,
   };
 };
