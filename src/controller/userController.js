@@ -1,4 +1,5 @@
 const authServices = require("../services/userServices");
+const userService = require("../services/userServices");
 const getUser = async (req, res, next) => {
   try {
     const result = await authServices.handleGetUser(req, res);
@@ -31,4 +32,18 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getUser, updateUser };
+const updateProfilePicture = async (req, res, next) => {
+  try {
+    const result = await userService.updateUserProfilePic(req);
+    console.log(result);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+module.exports = { getUser, updateUser, updateProfilePicture };

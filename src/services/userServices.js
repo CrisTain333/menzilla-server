@@ -10,3 +10,5 @@ exports.handleGetUser = async (req, res) => {
 
   return { status: 200, message: "success", user };
 };
+
+exports.updateUserProfilePic = async (req) => {};
