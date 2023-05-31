@@ -18,6 +18,11 @@ async function uploadMultipleFiles(files) {
           folder: "Menzilla/Shops",
         });
         uploadResults.push(uploadResult.secure_url);
+      } else if (file?.fieldname === "profilePicture") {
+        const uploadResult = await cloudinary.uploader.upload(file.path, {
+          folder: "Menzilla/User-profile",
+        });
+        uploadResults.push(uploadResult.secure_url);
       } else {
         const uploadResult = await cloudinary.uploader.upload(file.path, {
           folder: "Menzilla/Products",
