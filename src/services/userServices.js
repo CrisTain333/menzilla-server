@@ -45,8 +45,6 @@ exports.updateProfile = async (req) => {
       { $set: data },
       { new: true }
     );
-    console.log(result);
-
     return { message: { data, userId }, status: 200 };
   } catch (error) {
     console.log(error?.message);
