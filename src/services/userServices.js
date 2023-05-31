@@ -19,10 +19,21 @@ exports.updateUserProfilePic = async (req) => {
   try {
     const shopImage = [file];
     const imageUrl = await uploadMultipleFiles(shopImage);
-    console.log(userId, imageUrl);
-    return { message: "ok", status: 200 };
+
+    const result = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { profilePicture: imageUrl[0] },
+      { new: true }
+    );
+    // result.save();
+    console.log(result);
+
+    // console.log(userId, imageUrl);
+    return { message: "Profile Picture updated ", status: 200 };
   } catch (error) {
     console.log(error?.message);
-    return { message: "fail", status: 500 };
+    return { message: "Fail to upload image", status: 500 };
   }
 };
+
+exports.updateProfile = async (req) => {};
