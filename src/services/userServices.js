@@ -36,4 +36,20 @@ exports.updateUserProfilePic = async (req) => {
   }
 };
 
-exports.updateProfile = async (req) => {};
+exports.updateProfile = async (req) => {
+  const { userId } = req.query;
+  const data = req.body;
+  try {
+    const result = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { $set: data },
+      { new: true }
+    );
+    console.log(result);
+
+    return { message: { data, userId }, status: 200 };
+  } catch (error) {
+    console.log(error?.message);
+    return { message: "Fail to Update Profile", status: 500 };
+  }
+};
