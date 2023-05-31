@@ -17,7 +17,11 @@ let newUploadSystem = multer({
     fileSize: 1024 * 1024 * 5, // 5 MB
   },
   fileFilter: (req, file, cb) => {
-    if (file.fieldname === "images" || file.fieldname === "shopProfile") {
+    if (
+      file.fieldname === "images" ||
+      file.fieldname === "shopProfile" ||
+      file.fieldname === "profilePicture"
+    ) {
       if (
         file.mimetype === "image/jpg" ||
         file.mimetype === "image/jpeg" ||
