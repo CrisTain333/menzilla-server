@@ -15,6 +15,6 @@ router.patch(
   updateProfilePicture
 );
 router.patch("/update-profile", handleUpdateProfile);
-router.post("/add-address", handleAddAddress);
+router.patch("/add-address", handleAddAddress);
 
 module.exports = router;
