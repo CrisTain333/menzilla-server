@@ -70,19 +70,32 @@ exports.addAddress = async (req) => {
   const { userId } = req.query;
 
   try {
-    const user = await UserModel.findOneAndUpdate(
-      { _id: userId },
-      {
-        $set: { address: data },
-      },
-      { new: true }
+    const user = await UserModel.findById(userId);
+
+    const sameTypeAddress = user.addresses.find(
+      (address) => address.addressType === data.addressType
     );
-    if (!user) {
-      return { message: "User not found", status: 404 };
+    if (sameTypeAddress) {
+      return { message: "Address all ready exist", status: 500 };
     }
-    return { message: "Address added successfully", status: 200 };
+
+    const existsAddress = user.addresses.find(
+      (address) => address._id === data._id
+    );
+
+    if (existsAddress) {
+      Object.assign(existsAddress, data);
+    } else {
+      // add the new address to the array
+      user.addresses.push(data);
+    }
+
+    await user.save();
+    return {
+      message: "Address added successfully",
+      status: 200,
+    };
   } catch (error) {
-    console.error("Failed to add address:", error);
-    return { message: "Failed to add address", status: 500 };
+    return { message: "Fail to Add Address", status: 500 };
   }
 };
