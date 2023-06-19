@@ -68,10 +68,23 @@ const handleDeleteAddress = async (req, res, next) => {
   }
 };
 
+const handleChangePassword = async (req, res, next) => {
+  try {
+    const result = await userService.changePassword(req);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getUser,
   updateProfilePicture,
   handleUpdateProfile,
   handleAddAddress,
   handleDeleteAddress,
+  handleChangePassword,
 };
