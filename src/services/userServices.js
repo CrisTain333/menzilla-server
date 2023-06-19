@@ -111,6 +111,7 @@ exports.deleteAddress = async (req) => {
     );
     console.log(result);
     return {
+      status: 200,
       message: "Address deleted successfully",
     };
   } catch (error) {
