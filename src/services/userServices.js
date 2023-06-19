@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/UserModel");
 const { uploadMultipleFiles } = require("../middleware/uploadImage");
+const bcrypt = require("bcrypt");
 
 exports.handleGetUser = async (req, res) => {
   const auth_Token = req.header("Authorization");
@@ -38,14 +39,26 @@ exports.updateUserProfilePic = async (req) => {
 
 exports.updateProfile = async (req) => {
   const { userId } = req.query;
-  const data = req.body;
+  const { name, email, phone, password } = req.body;
+
+  const user = await UserModel.findById(userId);
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    return {
+      message: "Wrong Password",
+      status: 400,
+    };
+  }
+
   try {
-    const result = await UserModel.findOneAndUpdate(
+    await UserModel.findOneAndUpdate(
       { _id: userId },
-      { $set: data },
+      { name, email, phone },
       { new: true }
     );
-    return { message: { data, userId }, status: 200 };
+
+    return { message: "Profile Updated Successfully", status: 200 };
   } catch (error) {
     console.log(error?.message);
     return { message: "Fail to Update Profile", status: 500 };
