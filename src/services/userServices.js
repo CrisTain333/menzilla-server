@@ -99,3 +99,21 @@ exports.addAddress = async (req) => {
     return { message: "Fail to Add Address", status: 500 };
   }
 };
+
+exports.deleteAddress = async (req) => {
+  const { addressId, userId } = req.query;
+  try {
+    const result = await UserModel.updateOne(
+      {
+        _id: userId,
+      },
+      { $pull: { addresses: { _id: addressId } } }
+    );
+    console.log(result);
+    return {
+      message: "Address deleted successfully",
+    };
+  } catch (error) {
+    return { message: "Fail to Delete The Address", status: 500 };
+  }
+};

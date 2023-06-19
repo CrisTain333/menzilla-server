@@ -56,9 +56,22 @@ const handleAddAddress = async (req, res, next) => {
   }
 };
 
+const handleDeleteAddress = async (req, res, next) => {
+  try {
+    const result = await userService.deleteAddress(req);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getUser,
   updateProfilePicture,
   handleUpdateProfile,
   handleAddAddress,
+  handleDeleteAddress,
 };

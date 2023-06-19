@@ -4,6 +4,7 @@ const {
   updateProfilePicture,
   handleUpdateProfile,
   handleAddAddress,
+  handleDeleteAddress,
 } = require("../../controller/userController");
 const newUploadSystem = require("../../middleware/newUpload");
 const router = express.Router();
@@ -16,5 +17,6 @@ router.patch(
 );
 router.patch("/update-profile", handleUpdateProfile);
 router.patch("/add-address", handleAddAddress);
+router.delete("/delete-address", handleDeleteAddress);
 
 module.exports = router;
