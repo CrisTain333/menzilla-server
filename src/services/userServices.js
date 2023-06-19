@@ -65,4 +65,13 @@ exports.updateProfile = async (req) => {
   }
 };
 
-exports.addAddress = async (req) => {};
+exports.addAddress = async (req) => {
+  const data = req.body;
+  const { userId } = req.query;
+  try {
+    await UserModel.findByIdAndUpdate(userId, { $set: { address: data } });
+    return { message: "Address Added successfully", status: 200 };
+  } catch (error) {
+    return { message: "Fail to Add Address", status: 500 };
+  }
+};
