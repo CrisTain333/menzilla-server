@@ -138,8 +138,9 @@ exports.changePassword = async (req) => {
         message: "Password doesn't matched with each other!",
       };
     }
-
-    user.password = newPassword;
+    // Hash the plain password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
 
     await user.save();
 
