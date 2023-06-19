@@ -118,3 +118,36 @@ exports.deleteAddress = async (req) => {
     return { message: "Fail to Delete The Address", status: 500 };
   }
 };
+
+exports.changePassword = async (req) => {
+  const { userId } = req.query;
+  const { oldPassword, newPassword, newConfirmPassword } = req.body;
+  try {
+    const user = await UserModel.findById(userId);
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isMatch) {
+      return {
+        message: "Old password is incorrect!",
+        status: 400,
+      };
+    }
+    if (newPassword !== newConfirmPassword) {
+      return {
+        status: 400,
+        message: "Password doesn't matched with each other!",
+      };
+    }
+
+    user.password = newPassword;
+
+    await user.save();
+
+    return {
+      status: 200,
+      message: "Password updated successfully !",
+    };
+  } catch (error) {
+    return { message: "Fail to change password", status: 500 };
+  }
+};
