@@ -64,3 +64,5 @@ exports.updateProfile = async (req) => {
     return { message: "Fail to Update Profile", status: 500 };
   }
 };
+
+exports.addAddress = async (req) => {};

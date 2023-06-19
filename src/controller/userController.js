@@ -44,8 +44,21 @@ const handleUpdateProfile = async (req, res, next) => {
   }
 };
 
+const handleAddAddress = async (req, res, next) => {
+  try {
+    const result = await userService.addAddress(req);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getUser,
   updateProfilePicture,
   handleUpdateProfile,
+  handleAddAddress,
 };
