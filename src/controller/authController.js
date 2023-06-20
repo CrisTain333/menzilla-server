@@ -1,6 +1,5 @@
 const authService = require("../services/authServices");
 
-
 const registerUser = async (req, res, next) => {
   try {
     const result = await authService.handleRegisterUser(req, res);
@@ -10,7 +9,6 @@ const registerUser = async (req, res, next) => {
       message: result?.message,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -38,7 +36,6 @@ const login = async (req, res, next) => {
       user: result?.usr,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
