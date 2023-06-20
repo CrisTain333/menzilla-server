@@ -32,7 +32,7 @@ exports.createOrder = async (req) => {
     return {
       message: "order created successfully",
       status: 200,
-      orders,
+      data: orders,
     };
   } catch (error) {
     return {

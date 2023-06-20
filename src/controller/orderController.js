@@ -5,6 +5,7 @@ const createOrder = async (req, res, next) => {
     res.send({
       status: result?.status,
       message: result?.message,
+      data: result?.data,
     });
   } catch (error) {
     next(error);
