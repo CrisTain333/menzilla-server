@@ -2,6 +2,7 @@ const OrderModal = require("../models/OrderModal");
 
 exports.createOrder = async (req) => {
   const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
+  console.log(cart);
 
   try {
     //   group cart items by shopId
@@ -35,6 +36,7 @@ exports.createOrder = async (req) => {
       data: orders,
     };
   } catch (error) {
+    console.log(error);
     return {
       status: 500,
       message: "Fail to create order",
