@@ -11,7 +11,6 @@ const getUser = async (req, res, next) => {
       role: result?.role,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -25,7 +24,6 @@ const updateProfilePicture = async (req, res, next) => {
       message: result?.message,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

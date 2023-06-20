@@ -7,7 +7,6 @@ const registerShop = async (req, res, next) => {
       message: result?.message,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
