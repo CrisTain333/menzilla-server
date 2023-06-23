@@ -47,7 +47,6 @@ exports.createOrder = async (req) => {
 exports.getAllOrders = async (req) => {
   const limit = 8;
   const page = parseInt(req.query.page) || 1;
-  console.log(req.query.page);
   const skip = (page - 1) * limit;
   const userId = req.params.id;
 
@@ -79,9 +78,41 @@ exports.getAllOrders = async (req) => {
   } catch (error) {
     return {
       status: 500,
-      message: "some thing went wrong",
+      message: "fail to get user orders",
     };
   }
 };
 
-exports.getShopAllOrders = async (req) => {};
+exports.getShopAllOrders = async (req) => {
+  const limit = 6;
+  const page = parseInt(req.query.page) || 1;
+  const skip = (page - 1) * limit;
+  const shopId = req.params.id;
+
+  try {
+    const count = await OrderModal.find({
+      "cart.shopId": shopId,
+    }).countDocuments();
+    const orders = await OrderModal.find({
+      "cart.shopId": shopId,
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    return {
+      status: 200,
+      message: "ok",
+      data: orders,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page),
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "fail to get shop orders",
+    };
+  }
+};
