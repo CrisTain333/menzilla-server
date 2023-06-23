@@ -43,3 +43,5 @@ exports.createOrder = async (req) => {
     };
   }
 };
+
+exports.getAllOrders = async (req) => {};

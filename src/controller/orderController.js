@@ -12,6 +12,20 @@ const createOrder = async (req, res, next) => {
   }
 };
 
+const getAllOrdersOfUser = async (req, res, next) => {
+  try {
+    const result = await orderServices.getAllOrders(req);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+      data: result?.data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createOrder,
+  getAllOrdersOfUser,
 };
