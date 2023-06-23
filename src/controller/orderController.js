@@ -41,8 +41,22 @@ const getAllOrdersOfShop = async (req, res, next) => {
   }
 };
 
+const getSingleOrder = async (req, res, next) => {
+  try {
+    const result = await orderServices.getSingleOrder(req);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+      data: result?.data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createOrder,
   getAllOrdersOfUser,
   getAllOrdersOfShop,
+  getSingleOrder,
 };
