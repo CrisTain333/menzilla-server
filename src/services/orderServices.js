@@ -120,7 +120,7 @@ exports.getShopAllOrders = async (req) => {
 
 exports.getSingleOrder = async (req) => {
   const orderId = req.params.id;
-  const data = OrderModal.findById(orderId);
+  const data = await OrderModal.findById(orderId);
   if (!data) {
     return {
       status: 404,
@@ -134,3 +134,5 @@ exports.getSingleOrder = async (req) => {
     };
   }
 };
+
+exports.updateOrderStatus = async (req) => {};

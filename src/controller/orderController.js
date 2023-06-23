@@ -54,9 +54,22 @@ const getSingleOrder = async (req, res, next) => {
   }
 };
 
+const updateOrderStatus = async (req, res, next) => {
+  try {
+    const result = await orderServices.getSingleOrder(req);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createOrder,
   getAllOrdersOfUser,
   getAllOrdersOfShop,
   getSingleOrder,
+  updateOrderStatus,
 };
