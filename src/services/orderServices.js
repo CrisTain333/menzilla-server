@@ -45,12 +45,22 @@ exports.createOrder = async (req) => {
 };
 
 exports.getAllOrders = async (req) => {
+  const limit = 10;
+  const page = parseInt(req.query.page) || 1;
+  const skip = (page - 1) * limit;
   const userId = req.params.id;
 
   try {
-    const orders = await OrderModal.find({ "user._id": userId }).sort({
-      createdAt: -1,
-    });
+    const count = await OrderModal.find({
+      "user._id": userId,
+    }).countDocuments();
+
+    const orders = await OrderModal.find({ "user._id": userId })
+      .sort({
+        createdAt: -1,
+      })
+      .skip(skip)
+      .limit(parseInt(limit));
 
     if (!orders) {
       return {
@@ -62,6 +72,8 @@ exports.getAllOrders = async (req) => {
       status: 200,
       message: "ok",
       data: orders,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page),
     };
   } catch (error) {
     return {

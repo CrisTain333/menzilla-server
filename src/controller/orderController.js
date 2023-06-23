@@ -19,6 +19,8 @@ const getAllOrdersOfUser = async (req, res, next) => {
       status: result?.status,
       message: result?.message,
       data: result?.data,
+      totalPages: result?.totalPages,
+      currentPage: result?.currentPage,
     });
   } catch (error) {
     next(error);
