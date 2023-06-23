@@ -1,8 +1,8 @@
 const OrderModal = require("../models/OrderModal");
+const ShopModal = require("../models/ShopModal");
 
 exports.createOrder = async (req) => {
   const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
-  console.log(cart);
 
   try {
     //   group cart items by shopId
@@ -36,7 +36,6 @@ exports.createOrder = async (req) => {
       data: orders,
     };
   } catch (error) {
-    console.log(error);
     return {
       status: 500,
       message: "Fail to create order",
@@ -135,4 +134,62 @@ exports.getSingleOrder = async (req) => {
   }
 };
 
-exports.updateOrderStatus = async (req) => {};
+exports.updateOrderStatus = async (req) => {
+  try {
+    const order = await OrderModal.findById(req.params.id);
+
+    if (!order) {
+      return { message: "Order not found with this id", status: 400 };
+    }
+
+    if (req.body.status === "Transferred to delivery partner") {
+      order.cart.forEach(async (o) => {
+        await updateOrder(o?.product?._id, o?.quantity);
+      });
+    }
+
+    order.status = req.body.status;
+
+    if (req.body.status === "Delivered") {
+      order.deliveredAt = Date.now();
+      order.paymentInfo.status = "Succeeded";
+      const serviceCharge = order.totalPrice * 0.1;
+      await updateSellerInfo(order.totalPrice - serviceCharge);
+    }
+
+    await order.save({ validateBeforeSave: false });
+
+    // res.status(200).json({
+    //   success: true,
+    //   order,
+    // });
+
+    // Need to work from hear
+    async function updateOrder(id, qty) {
+      const product = await Product.findById(id);
+
+      product.stock -= qty;
+      product.sold_out += qty;
+
+      await product.save({ validateBeforeSave: false });
+    }
+
+    async function updateSellerInfo(amount) {
+      const seller = await ShopModal.findById(order.cart.shopId);
+
+      seller.availableBalance = amount;
+
+      await seller.save();
+    }
+
+    return {
+      message: "Order Status updated successfully",
+      status: 200,
+    };
+  } catch (error) {
+    return {
+      message: "fail to update status",
+      status: 400,
+    };
+  }
+};

@@ -3,7 +3,6 @@ const userService = require("../services/userServices");
 const getUser = async (req, res, next) => {
   try {
     const result = await authServices.handleGetUser(req, res);
-    console.log(result);
     res.send({
       status: result?.status,
       message: result?.message,
@@ -18,7 +17,6 @@ const getUser = async (req, res, next) => {
 const updateProfilePicture = async (req, res, next) => {
   try {
     const result = await userService.updateUserProfilePic(req);
-    console.log(result);
     res.send({
       status: result?.status,
       message: result?.message,
@@ -31,13 +29,11 @@ const updateProfilePicture = async (req, res, next) => {
 const handleUpdateProfile = async (req, res, next) => {
   try {
     const result = await userService.updateProfile(req);
-    console.log(result);
     res.send({
       status: result?.status,
       message: result?.message,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

@@ -56,7 +56,7 @@ const getSingleOrder = async (req, res, next) => {
 
 const updateOrderStatus = async (req, res, next) => {
   try {
-    const result = await orderServices.getSingleOrder(req);
+    const result = await orderServices.updateOrderStatus(req);
     res.send({
       status: result?.status,
       message: result?.message,

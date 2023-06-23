@@ -12,7 +12,6 @@ exports.paymentProcess = async (req) => {
       data: paymentIntent.client_secret,
     };
   } catch (error) {
-    console.log(error);
     return {
       status: 500,
       message: "fail to create payment intent",

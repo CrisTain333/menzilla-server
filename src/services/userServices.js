@@ -16,7 +16,6 @@ exports.handleGetUser = async (req, res) => {
 exports.updateUserProfilePic = async (req) => {
   const file = req.file;
   const { userId } = req.query;
-  console.log("got hit");
   try {
     const shopImage = [file];
     const imageUrl = await uploadMultipleFiles(shopImage);
@@ -27,9 +26,7 @@ exports.updateUserProfilePic = async (req) => {
       { new: true }
     );
     // result.save();
-    console.log(result);
 
-    // console.log(userId, imageUrl);
     return { message: "Profile Picture updated ", status: 200 };
   } catch (error) {
     console.log(error?.message);
@@ -60,7 +57,6 @@ exports.updateProfile = async (req) => {
 
     return { message: "Profile Updated Successfully", status: 200 };
   } catch (error) {
-    console.log(error?.message);
     return { message: "Fail to Update Profile", status: 500 };
   }
 };
@@ -109,7 +105,6 @@ exports.deleteAddress = async (req) => {
       },
       { $pull: { addresses: { _id: addressId } } }
     );
-    console.log(result);
     return {
       status: 200,
       message: "Address deleted successfully",
