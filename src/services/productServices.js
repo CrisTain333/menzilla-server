@@ -7,7 +7,6 @@ const ShopModal = require("../models/ShopModal");
 exports.createProductHandler = async (req, res) => {
   const productData = req.body;
   const files = req.files;
-  console.log(productData);
 
   try {
     const shopId = productData.shopId;
@@ -27,7 +26,6 @@ exports.createProductHandler = async (req, res) => {
       };
     }
   } catch (error) {
-    console.log(error);
     return {
       status: 500,
       message: error.toString(),
@@ -62,7 +60,6 @@ exports.getProducts = async (req, res) => {
       currentPage: parseInt(page),
     };
   } catch (error) {
-    console.log(error);
     return {
       status: 500,
       message: error.toString(),
