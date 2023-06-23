@@ -91,10 +91,11 @@ exports.getShopAllOrders = async (req) => {
 
   try {
     const count = await OrderModal.find({
-      "cart.shopId": shopId,
+      "cart.product.shopId": shopId,
     }).countDocuments();
+
     const orders = await OrderModal.find({
-      "cart.shopId": shopId,
+      "cart.product.shopId": shopId,
     })
       .sort({
         createdAt: -1,
