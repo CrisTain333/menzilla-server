@@ -26,8 +26,23 @@ const getAllOrdersOfUser = async (req, res, next) => {
     next(error);
   }
 };
+const getAllOrdersOfShop = async (req, res, next) => {
+  try {
+    const result = await orderServices.getShopAllOrders(req);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+      data: result?.data,
+      totalPages: result?.totalPages,
+      currentPage: result?.currentPage,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   createOrder,
   getAllOrdersOfUser,
+  getAllOrdersOfShop,
 };

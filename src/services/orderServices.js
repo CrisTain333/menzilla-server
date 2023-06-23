@@ -45,8 +45,9 @@ exports.createOrder = async (req) => {
 };
 
 exports.getAllOrders = async (req) => {
-  const limit = 10;
+  const limit = 8;
   const page = parseInt(req.query.page) || 1;
+  console.log(req.query.page);
   const skip = (page - 1) * limit;
   const userId = req.params.id;
 
@@ -82,3 +83,5 @@ exports.getAllOrders = async (req) => {
     };
   }
 };
+
+exports.getShopAllOrders = async (req) => {};
