@@ -1,5 +1,6 @@
 const OrderModal = require("../models/OrderModal");
 const ShopModal = require("../models/ShopModal");
+const ProductModal = require("../models/ProductModal");
 
 exports.createOrder = async (req) => {
   const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
@@ -135,6 +136,8 @@ exports.getSingleOrder = async (req) => {
 };
 
 exports.updateOrderStatus = async (req) => {
+  console.log(req.params.id);
+  console.log(req.body.status);
   try {
     const order = await OrderModal.findById(req.params.id);
 
@@ -149,29 +152,25 @@ exports.updateOrderStatus = async (req) => {
     }
 
     order.status = req.body.status;
-
+    // Delivered;
     if (req.body.status === "Delivered") {
+      console.log("iamin");
       order.deliveredAt = Date.now();
       order.paymentInfo.status = "Succeeded";
       const serviceCharge = order.totalPrice * 0.1;
       await updateSellerInfo(order.totalPrice - serviceCharge);
     }
+    console.log(order);
 
-    await order.save({ validateBeforeSave: false });
-
-    // res.status(200).json({
-    //   success: true,
-    //   order,
-    // });
-
+    await order.save();
     // Need to work from hear
     async function updateOrder(id, qty) {
-      const product = await Product.findById(id);
+      const product = await ProductModal.findById(id);
 
       product.stock -= qty;
       product.sold_out += qty;
 
-      await product.save({ validateBeforeSave: false });
+      await product.save();
     }
 
     async function updateSellerInfo(amount) {
