@@ -44,4 +44,29 @@ exports.createOrder = async (req) => {
   }
 };
 
-exports.getAllOrders = async (req) => {};
+exports.getAllOrders = async (req) => {
+  const userId = req.params.id;
+
+  try {
+    const orders = await OrderModal.find({ "user._id": userId }).sort({
+      createdAt: -1,
+    });
+
+    if (!orders) {
+      return {
+        message: "Orders not found",
+        status: 404,
+      };
+    }
+    return {
+      status: 200,
+      message: "ok",
+      data: orders,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "some thing went wrong",
+    };
+  }
+};
