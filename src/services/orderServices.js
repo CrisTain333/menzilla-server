@@ -3,7 +3,13 @@ const ShopModal = require("../models/ShopModal");
 const ProductModal = require("../models/ProductModal");
 
 exports.createOrder = async (req) => {
-  const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
+  const {
+    cart,
+    shippingAddress,
+    user,
+    totalPrice,
+    paymentInfo,
+  } = req.body;
 
   try {
     //   group cart items by shopId
@@ -55,7 +61,9 @@ exports.getAllOrders = async (req) => {
       "user._id": userId,
     }).countDocuments();
 
-    const orders = await OrderModal.find({ "user._id": userId })
+    const orders = await OrderModal.find({
+      "user._id": userId,
+    })
       .sort({
         createdAt: -1,
       })
@@ -142,10 +150,15 @@ exports.updateOrderStatus = async (req) => {
     const order = await OrderModal.findById(req.params.id);
 
     if (!order) {
-      return { message: "Order not found with this id", status: 400 };
+      return {
+        message: "Order not found with this id",
+        status: 400,
+      };
     }
 
-    if (req.body.status === "Transferred to delivery partner") {
+    if (
+      req.body.status === "Transferred to delivery partner"
+    ) {
       order.cart.forEach(async (o) => {
         await updateOrder(o?.product?._id, o?.quantity);
       });
@@ -158,7 +171,9 @@ exports.updateOrderStatus = async (req) => {
       order.deliveredAt = Date.now();
       order.paymentInfo.status = "Succeeded";
       const serviceCharge = order.totalPrice * 0.1;
-      await updateSellerInfo(order.totalPrice - serviceCharge);
+      await updateSellerInfo(
+        order.totalPrice - serviceCharge
+      );
     }
     console.log(order);
 
@@ -174,7 +189,9 @@ exports.updateOrderStatus = async (req) => {
     }
 
     async function updateSellerInfo(amount) {
-      const seller = await ShopModal.findById(order.cart.shopId);
+      const seller = await ShopModal.findById(
+        order.cart.shopId
+      );
 
       seller.availableBalance = amount;
 
@@ -186,6 +203,7 @@ exports.updateOrderStatus = async (req) => {
       status: 200,
     };
   } catch (error) {
+    console.log(error);
     return {
       message: "fail to update status",
       status: 400,

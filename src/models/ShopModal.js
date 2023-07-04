@@ -7,7 +7,10 @@ const shopSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: [true, "Please enter your shop email address"],
+    required: [
+      true,
+      "Please enter your shop email address",
+    ],
   },
   password: {
     type: String,
@@ -35,6 +38,10 @@ const shopSchema = new mongoose.Schema({
   zipCode: {
     type: Number,
     required: true,
+  },
+  availableBalance: {
+    type: Number,
+    default: 0,
   },
   isEmailVerified: {
     type: Boolean,
