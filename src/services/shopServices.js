@@ -287,7 +287,7 @@ exports.changeShopProfilePicture = async (req) => {
     const shopImage = [file];
     const imageUrl = await uploadMultipleFiles(shopImage);
 
-    await ShopModal.findOneAndUpdate(
+    const result = await ShopModal.findOneAndUpdate(
       { _id: shopId },
       { shopProfile: imageUrl[0] },
       { new: true }
