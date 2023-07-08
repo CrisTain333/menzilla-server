@@ -74,10 +74,26 @@ const changeShopProfile = async (req, res, next) => {
     next(error);
   }
 };
+
+const updateShop = async (req, res, next) => {
+  try {
+    const result = await shopServices.updateShopDetails(
+      req
+    );
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    res.json({ status: 500, message: error?.message });
+    next(error);
+  }
+};
 module.exports = {
   registerShop,
   verifySellerEmail,
   sellerLogin,
   getSeller,
   changeShopProfile,
+  updateShop,
 };

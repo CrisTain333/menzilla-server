@@ -7,6 +7,7 @@ const {
   sellerLogin,
   getSeller,
   changeShopProfile,
+  updateShop,
 } = require("../../controller/shopController");
 const newUploadSystem = require("../../middleware/newUpload");
 
@@ -23,6 +24,8 @@ router.patch(
   newUploadSystem.single("shopProfile"),
   changeShopProfile
 );
+
+router.patch("/update-profile/:id", updateShop);
 // router.get('/:id')
 
 module.exports = router;

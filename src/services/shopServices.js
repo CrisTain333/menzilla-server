@@ -277,3 +277,37 @@ exports.handleGetSeller = async (req, res) => {
 };
 
 exports.changeShopProfilePicture = (req) => {};
+
+exports.updateShopDetails = async (req) => {
+  try {
+    const {
+      name,
+      description,
+      address,
+      phoneNumber,
+      zipCode,
+    } = req.body;
+    const shopId = req.params.id;
+
+    const shop = await ShopModal.findOne(shopId);
+
+    if (!shop) {
+      throw new Error("shop not found");
+    }
+
+    shop.name = name;
+    shop.description = description;
+    shop.address = address;
+    shop.phoneNumber = phoneNumber;
+    shop.zipCode = zipCode;
+
+    await ShopModal.save();
+
+    return {
+      status: 200,
+      message: "updated successfully",
+    };
+  } catch (error) {
+    return { status: 500, message: error.toString() };
+  }
+};
