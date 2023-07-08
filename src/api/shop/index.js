@@ -6,13 +6,23 @@ const {
   verifySellerEmail,
   sellerLogin,
   getSeller,
+  changeShopProfile,
 } = require("../../controller/shopController");
 const newUploadSystem = require("../../middleware/newUpload");
 
-router.post("/register", newUploadSystem.single("shopProfile"), registerShop);
+router.post(
+  "/register",
+  newUploadSystem.single("shopProfile"),
+  registerShop
+);
 router.post("/login", sellerLogin);
 router.post("/verify-email", verifySellerEmail);
 router.get("/seller", getSeller);
+router.patch(
+  "/change-shop-profile",
+  newUploadSystem.single("shopProfile"),
+  changeShopProfile
+);
 // router.get('/:id')
 
 module.exports = router;

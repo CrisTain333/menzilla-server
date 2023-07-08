@@ -1,7 +1,10 @@
 const shopServices = require("../services/shopServices");
 const registerShop = async (req, res, next) => {
   try {
-    const result = await shopServices.handleShopRegister(req, res);
+    const result = await shopServices.handleShopRegister(
+      req,
+      res
+    );
     res.send({
       status: result?.status,
       message: result?.message,
@@ -13,7 +16,8 @@ const registerShop = async (req, res, next) => {
 
 const verifySellerEmail = async (req, res, next) => {
   try {
-    const result = await shopServices.handleSellerEmailVerify(req, res);
+    const result =
+      await shopServices.handleSellerEmailVerify(req, res);
     res.send({
       status: result?.status,
       message: result?.message,
@@ -26,7 +30,10 @@ const verifySellerEmail = async (req, res, next) => {
 
 const sellerLogin = async (req, res, next) => {
   try {
-    const result = await shopServices.handleSellerLogin(req, res);
+    const result = await shopServices.handleSellerLogin(
+      req,
+      res
+    );
     res.send({
       status: result?.status,
       message: result?.message,
@@ -39,7 +46,10 @@ const sellerLogin = async (req, res, next) => {
 };
 const getSeller = async (req, res, next) => {
   try {
-    const result = await shopServices.handleGetSeller(req, res);
+    const result = await shopServices.handleGetSeller(
+      req,
+      res
+    );
     res.send({
       status: result?.status,
       message: result?.message,
@@ -50,4 +60,12 @@ const getSeller = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { registerShop, verifySellerEmail, sellerLogin, getSeller };
+
+const changeShopProfile = async () => {};
+module.exports = {
+  registerShop,
+  verifySellerEmail,
+  sellerLogin,
+  getSeller,
+  changeShopProfile,
+};

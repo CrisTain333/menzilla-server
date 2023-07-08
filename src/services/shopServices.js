@@ -275,3 +275,5 @@ exports.handleGetSeller = async (req, res) => {
     return { status: 500, message: error.toString() };
   }
 };
+
+exports.changeShopProfilePicture = (req) => {};
