@@ -213,6 +213,7 @@ exports.handleGetSeller = async (req, res) => {
         isEmailVerified,
         createdAt,
         availableBalance,
+        description,
       } = seller;
 
       return {
@@ -230,6 +231,7 @@ exports.handleGetSeller = async (req, res) => {
           isEmailVerified,
           createdAt,
           availableBalance,
+          description,
         },
       };
     } else {
@@ -250,6 +252,7 @@ exports.handleGetSeller = async (req, res) => {
         isEmailVerified,
         availableBalance,
         createdAt,
+        description,
       } = seller;
 
       return {
@@ -267,6 +270,7 @@ exports.handleGetSeller = async (req, res) => {
           isEmailVerified,
           createdAt,
           availableBalance,
+          description,
         },
       };
     }
@@ -286,10 +290,12 @@ exports.updateShopDetails = async (req) => {
       address,
       phoneNumber,
       zipCode,
-    } = req.body;
+    } = req.body.Data;
     const shopId = req.params.id;
 
-    const shop = await ShopModal.findOne(shopId);
+    console.log(req.body.Data);
+
+    const shop = await ShopModal.findById(shopId);
 
     if (!shop) {
       throw new Error("shop not found");
@@ -301,7 +307,7 @@ exports.updateShopDetails = async (req) => {
     shop.phoneNumber = phoneNumber;
     shop.zipCode = zipCode;
 
-    await ShopModal.save();
+    await shop.save();
 
     return {
       status: 200,

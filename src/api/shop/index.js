@@ -25,7 +25,7 @@ router.patch(
   changeShopProfile
 );
 
-router.patch("/update-profile/:id", updateShop);
+router.put("/update-profile/:id", updateShop);
 // router.get('/:id')
 
 module.exports = router;
