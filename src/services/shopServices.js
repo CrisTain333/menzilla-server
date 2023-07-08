@@ -280,7 +280,28 @@ exports.handleGetSeller = async (req, res) => {
   }
 };
 
-exports.changeShopProfilePicture = (req) => {};
+exports.changeShopProfilePicture = async (req) => {
+  const file = req.file;
+  const { shopId } = req.query;
+  try {
+    const shopImage = [file];
+    const imageUrl = await uploadMultipleFiles(shopImage);
+
+    await ShopModal.findOneAndUpdate(
+      { _id: shopId },
+      { shopProfile: imageUrl[0] },
+      { new: true }
+    );
+
+    return {
+      message: "Profile Picture updated ",
+      status: 200,
+    };
+  } catch (error) {
+    console.log(error?.message);
+    return { message: "Fail to upload image", status: 500 };
+  }
+};
 
 exports.updateShopDetails = async (req) => {
   try {
