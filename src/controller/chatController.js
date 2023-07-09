@@ -15,6 +15,19 @@ const createConversation = async (req, res, next) => {
   }
 };
 
+const createMessage = async (req, res, next) => {
+  try {
+    const result = await chatService.createMessages(req);
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createConversation,
+  createMessage,
 };
