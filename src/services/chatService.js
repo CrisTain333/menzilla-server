@@ -23,7 +23,6 @@ exports.createConverSation = async (req) => {
       });
       return {
         status: 201,
-        message: "Conversation already exist",
         data: conversation,
       };
     }
