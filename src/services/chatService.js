@@ -53,6 +53,9 @@ exports.getSellerConversations = async (req) => {
     //    conversations,
     //  });
   } catch (error) {
-    return next(new ErrorHandler(error), 500);
+    return {
+      status: 500,
+      message: error.toString(),
+    };
   }
 };
