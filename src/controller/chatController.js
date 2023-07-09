@@ -27,7 +27,23 @@ const createMessage = async (req, res, next) => {
   }
 };
 
+const getSellerConversations = async (req, res, next) => {
+  try {
+    const result = await chatService.getSellerConversations(
+      req
+    );
+    res.send({
+      status: result?.status,
+      message: result?.message,
+      data: result?.data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createConversation,
   createMessage,
+  getSellerConversations,
 };
