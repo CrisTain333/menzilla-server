@@ -10,7 +10,7 @@ const routes = require("./routes/index");
 const app = express();
 const server = require("http").createServer(app);
 const socketIO = require("socket.io");
-export const io = socketIO(server);
+const io = socketIO(server);
 dotenv.config();
 const PORT = process.env.PORT || 8000;
 const path = require("path");
@@ -35,10 +35,12 @@ app.get("/", async (req, res) => {
 // Entrance
 app.use("/api/v1", routes);
 
-
-
 app.listen(PORT, () => {
   console.log(
     `⚡ Server Fire On http://localhost:${PORT}`.cyan
   );
 });
+
+module.exports = {
+  io,
+};
