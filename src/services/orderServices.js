@@ -175,13 +175,13 @@ exports.updateOrderStatus = async (req) => {
         order.totalPrice - serviceCharge
       );
     }
-    console.log(order);
 
     await order.save();
     // Need to work from hear
     async function updateOrder(id, qty) {
       const product = await ProductModal.findById(id);
-
+      console.log(qty);
+      console.log(product);
       product.stock -= qty;
       product.sold_out += qty;
 
@@ -190,7 +190,6 @@ exports.updateOrderStatus = async (req) => {
 
     async function updateSellerInfo(amount) {
       // console.log(order?.cart?.product?.shopId);
-      console.log(order?.cart?.[0]?.product?.shopId);
       const seller = await ShopModal.findById(
         order?.cart?.[0]?.product?.shopId
       );
