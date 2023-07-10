@@ -189,11 +189,15 @@ exports.updateOrderStatus = async (req) => {
     }
 
     async function updateSellerInfo(amount) {
+      // console.log(order?.cart?.product?.shopId);
+      console.log(order?.cart?.[0]?.product?.shopId);
       const seller = await ShopModal.findById(
-        order.cart.shopId
+        order?.cart?.[0]?.product?.shopId
       );
 
-      seller.availableBalance = amount;
+      console.log(seller);
+
+      seller.availableBalance += amount;
 
       await seller.save();
     }
