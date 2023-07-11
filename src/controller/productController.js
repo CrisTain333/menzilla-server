@@ -52,7 +52,7 @@ const deleteProduct = async (req, res, next) => {
 const getAllProducts = async (req, res, next) => {
   try {
     const result =
-      await productServices.getAllProductFromDb();
+      await productServices.getAllProductFromDb(req);
     res.send({
       status: result?.status,
       message: result?.message,
