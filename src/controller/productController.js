@@ -1,7 +1,8 @@
 const productServices = require("../services/productServices");
 const createProduct = async (req, res, next) => {
   try {
-    const result = await productServices.createProductHandler(req, res);
+    const result =
+      await productServices.createProductHandler(req, res);
     res.send({
       status: result?.status,
       message: result?.message,
@@ -16,7 +17,10 @@ const createProduct = async (req, res, next) => {
 // Get all Products Of Shop
 const getShopProducts = async (req, res, next) => {
   try {
-    const result = await productServices.getProducts(req, res);
+    const result = await productServices.getProducts(
+      req,
+      res
+    );
     res.send({
       status: result?.status,
       message: result?.message,
@@ -33,7 +37,8 @@ const getShopProducts = async (req, res, next) => {
 // delete product from shop
 const deleteProduct = async (req, res, next) => {
   try {
-    const result = await productServices.deleteProductFromDb(req);
+    const result =
+      await productServices.deleteProductFromDb(req);
     res.send({
       status: result?.status,
       message: result?.message,
@@ -46,11 +51,14 @@ const deleteProduct = async (req, res, next) => {
 // Get all Products
 const getAllProducts = async (req, res, next) => {
   try {
-    const result = await productServices.getAllProductFromDb();
+    const result =
+      await productServices.getAllProductFromDb(req);
     res.send({
       status: result?.status,
       message: result?.message,
       data: result?.data,
+      totalPages: result?.totalPages,
+      currentPage: result?.currentPage,
     });
   } catch (error) {
     res.json({ status: 500, message: error?.message });
@@ -61,7 +69,8 @@ const getAllProducts = async (req, res, next) => {
 const getPreviewShopProducts = async (req, res, next) => {
   try {
     const id = req.query.shopID;
-    const result = await productServices.previewShopProducts(id);
+    const result =
+      await productServices.previewShopProducts(id);
     res.send({
       status: result?.status,
       message: result?.message,

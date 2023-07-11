@@ -1,6 +1,8 @@
 // const { uploadMultipleFiles } = require("../middleware/uploadImage");
 const { ObjectId } = require("mongodb");
-const { uploadMultipleFiles } = require("../middleware/uploadImage");
+const {
+  uploadMultipleFiles,
+} = require("../middleware/uploadImage");
 const ProductModal = require("../models/ProductModal");
 const ShopModal = require("../models/ShopModal");
 
@@ -12,7 +14,10 @@ exports.createProductHandler = async (req, res) => {
     const shopId = productData.shopId;
     const shop = await ShopModal.findById(shopId);
     if (!shop) {
-      return { message: "Shop Id is invalid!", status: 400 };
+      return {
+        message: "Shop Id is invalid!",
+        status: 400,
+      };
     } else {
       productData.shop = shop;
       const result = await uploadMultipleFiles(files);
@@ -49,7 +54,9 @@ exports.getProducts = async (req, res) => {
     const count = await ProductModal.find({
       shopId: sellerId,
     }).countDocuments();
-    const products = await ProductModal.find({ shopId: sellerId })
+    const products = await ProductModal.find({
+      shopId: sellerId,
+    })
       .skip(skip)
       .limit(parseInt(limit));
     return {
@@ -79,12 +86,25 @@ exports.deleteProductFromDb = async (req) => {
   };
 };
 
-exports.getAllProductFromDb = async () => {
-  const result = await ProductModal.find({});
+exports.getAllProductFromDb = async (req) => {
+  console.log(req.query.page);
+  const limit = 10;
+  const page = parseInt(req.query.page) || 1;
+  const skip = (page - 1) * limit;
+
+  const count = await ProductModal.find(
+    {}
+  ).countDocuments();
+  const result = await ProductModal.find({})
+    .skip(skip)
+    .limit(parseInt(limit));
+
   return {
     status: 200,
     message: "ok",
     data: result,
+    totalPages: Math.ceil(count / limit),
+    currentPage: parseInt(page),
   };
 };
 
