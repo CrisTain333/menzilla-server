@@ -87,7 +87,6 @@ exports.deleteProductFromDb = async (req) => {
 };
 
 exports.getAllProductFromDb = async (req) => {
-  console.log(req.query.page);
   const limit = 10;
   const page = parseInt(req.query.page) || 1;
   const skip = (page - 1) * limit;
