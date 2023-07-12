@@ -95,9 +95,9 @@ exports.getAllProductFromDb = async (req) => {
   const count = await ProductModal.find(
     {}
   ).countDocuments();
-  const result = await ProductModal.find({})
-    .skip(skip)
-    .limit(parseInt(limit));
+  const result = await ProductModal.find({});
+  // .skip(skip)
+  // .limit(parseInt(limit));
 
   return {
     status: 200,
