@@ -87,7 +87,6 @@ exports.deleteProductFromDb = async (req) => {
 };
 
 exports.getAllProductFromDb = async (req) => {
-  console.log(req.query.page);
   const limit = 10;
   const page = parseInt(req.query.page) || 1;
   const skip = (page - 1) * limit;
@@ -95,9 +94,9 @@ exports.getAllProductFromDb = async (req) => {
   const count = await ProductModal.find(
     {}
   ).countDocuments();
-  const result = await ProductModal.find({})
-    .skip(skip)
-    .limit(parseInt(limit));
+  const result = await ProductModal.find({});
+  // .skip(skip)
+  // .limit(parseInt(limit));
 
   return {
     status: 200,
