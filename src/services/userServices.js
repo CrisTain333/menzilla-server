@@ -8,13 +8,13 @@ const bcrypt = require("bcrypt");
 exports.handleGetUser = async (req, res) => {
   const auth_Token = req.header("Authorization");
   const token = auth_Token.split(" ")[1];
-  console.log(token);
 
   if (!token) {
-    return {
-      status: 401,
-      message: "Forbidden access",
-    };
+    throw new Error("token is required");
+    // return {
+    //   status: 401,
+    //   message: "Forbidden access",
+    // };
   }
 
   const id = jwt.verify(token, process.env.JWT_SECRET);
