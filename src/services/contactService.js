@@ -5,7 +5,8 @@ exports.handleContact = async (data) => {
     await ContactModal.create(data);
     return {
       status: 200,
-      message: "Successfully message sended",
+      message:
+        "Your message has been successfully submitted. Thank you for reaching out to us! We will get back to you as soon as possible",
     };
   } catch (error) {
     console.log(error);
