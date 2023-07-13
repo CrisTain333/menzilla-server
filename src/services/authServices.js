@@ -4,19 +4,30 @@ var defaultClient = SibApiV3Sdk.ApiClient.instance;
 const UserModel = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { createActivationToken, sendEmail } = require("../utils/common");
+const {
+  createActivationToken,
+  sendEmail,
+} = require("../utils/common");
 
 // ---------------------- handle Register ----------------------
 exports.handleRegisterUser = async (req, res) => {
   const { name, email, password, phone } = req.body;
   try {
     if ((!name, !email, !password, !phone)) {
-      return { status: 400, message: "All fields are required" };
+      return {
+        status: 400,
+        message: "All fields are required",
+      };
     }
     // Check if the user already exists
-    const existingUser = await UserModel.findOne({ $or: [{ email }] });
+    const existingUser = await UserModel.findOne({
+      $or: [{ email }],
+    });
     if (existingUser) {
-      return { status: 400, message: "Email already in use" };
+      return {
+        status: 400,
+        message: "Email already in use",
+      };
     }
     // Hash the plain password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -43,24 +54,35 @@ exports.handleRegisterUser = async (req, res) => {
     };
   } catch (error) {
     console.error(error);
-    return { status: 500, message: "Internal server error" };
+    return {
+      status: 500,
+      message: "Internal server error",
+    };
   }
 };
 
 // ---------------------- handle Verify Email ----------------------
 exports.handleVerifyEmail = async (req, res) => {
   const { token } = req.query;
-  const newUser = await jwt.verify(token, process.env.JWT_SECRET);
+  const newUser = await jwt.verify(
+    token,
+    process.env.JWT_SECRET
+  );
   if (!newUser) {
     return { message: "Invalid token", status: 400 };
   }
   const { email } = newUser;
 
   // Check if the user already exists
-  const existingUser = await UserModel.findOne({ $or: [{ email }] });
+  const existingUser = await UserModel.findOne({
+    $or: [{ email }],
+  });
 
   if (existingUser?.isEmailVerified) {
-    return { status: 400, message: "Email already Verified" };
+    return {
+      status: 400,
+      message: "Email already Verified",
+    };
   }
   const user = await UserModel.findOneAndUpdate(
     { email },
@@ -78,7 +100,10 @@ exports.loginUser = async (req, res) => {
   try {
     // all fields are required
     if ((!email, !password)) {
-      return { status: 401, message: "All fields are required" };
+      return {
+        status: 401,
+        message: "All fields are required",
+      };
     }
 
     const user = await UserModel.findOne({ email });
@@ -91,16 +116,23 @@ exports.loginUser = async (req, res) => {
       return { message: "email not verified", status: 404 };
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
     //Check User Password
     if (!isMatch) {
       return { status: 401, message: "invalid credential" };
     }
 
     // Generate Token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     // send token as response
     return {
@@ -119,4 +151,8 @@ exports.loginUser = async (req, res) => {
     console.error(`${error.message}`);
     return { status: 500, message: error.toString() };
   }
+};
+
+exports.handleResendEmail = async (data) => {
+  // data;
 };

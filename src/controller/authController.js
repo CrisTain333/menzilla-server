@@ -2,7 +2,10 @@ const authService = require("../services/authServices");
 
 const registerUser = async (req, res, next) => {
   try {
-    const result = await authService.handleRegisterUser(req, res);
+    const result = await authService.handleRegisterUser(
+      req,
+      res
+    );
     res.send({
       status: result?.status,
       message: result?.message,
@@ -14,7 +17,10 @@ const registerUser = async (req, res, next) => {
 
 const verifyEmail = async (req, res, next) => {
   try {
-    const result = await authService.handleVerifyEmail(req, res);
+    const result = await authService.handleVerifyEmail(
+      req,
+      res
+    );
     res.send({
       status: result?.status,
       message: result?.message,
@@ -39,4 +45,24 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, verifyEmail, login };
+const resendEmail = async (req, res, next) => {
+  try {
+    const data = req.body;
+    const result = await authService.handleResendEmail(
+      data
+    );
+    res.send({
+      status: result?.status,
+      message: result?.message,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  registerUser,
+  verifyEmail,
+  login,
+  resendEmail,
+};
