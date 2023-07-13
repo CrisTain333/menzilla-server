@@ -26,7 +26,7 @@ const sendEmail = async (options, activationUrl) => {
 
   await transporter
     .sendMail({
-      from: "sukanta.das4104@gmail.com", // sender address
+      from: "menzilla99@gmail.com", // sender address
       to: options?.email, // list of receivers
       subject: "Activate your account", // Subject line
       html: `
@@ -459,7 +459,7 @@ const sendOrderConfirmationEmail = async (order) => {
 
   await transporter
     .sendMail({
-      from: "sukanta.das4104@gmail.com", // sender address
+      from: "menzilla99@gmail.com", // sender address
       to: order[0]?.user?.email, // list of receivers
       subject: "Order Confirmation", // Subject line
       html: `
