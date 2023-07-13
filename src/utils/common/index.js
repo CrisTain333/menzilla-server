@@ -459,9 +459,9 @@ const sendOrderConfirmationEmail = async (order) => {
   await transporter
     .sendMail({
       from: "sukanta.das4104@gmail.com", // sender address
-      to: options?.email, // list of receivers
+      to: order?.user?.email, // list of receivers
       subject: "Order Confirmation", // Subject line
-        html: `
+      html: `
       
       <!DOCTYPE HTML
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -716,8 +716,11 @@ const sendOrderConfirmationEmail = async (order) => {
                                                                     style="line-height: 170%; text-align: center; font-size: 14px;">
                                                                     <span
                                                                         style="font-family: arial, helvetica, sans-serif; font-size: 14px; line-height: 23.8px;"><span
-                                                                            style="color: #ffffff;font-size: 16px; line-height: 27.2px;">Hey
-                                                                            {{first_name}},</span></span>
+                                                                            style="color: #ffffff;font-size: 16px; line-height: 27.2px;">Hey ${
+                                                                              order
+                                                                                ?.user
+                                                                                ?.name
+                                                                            },</span></span>
                                                                 </p>
                                                                 <p
                                                                     style="line-height: 170%; text-align: center; font-size: 14px;">
@@ -755,7 +758,10 @@ const sendOrderConfirmationEmail = async (order) => {
                                                                     style="font-size: 14px; line-height: 140%; text-align: center;">
                                                                     <span
                                                                         style="color: #ffffff;font-size: 16px; line-height: 22.4px; font-family: arial, helvetica, sans-serif;"><strong>ORDER
-                                                                            ID: {{order.order_id}}</strong></span>
+                                                                            ID: #${order?._id?.slice(
+                                                                              0,
+                                                                              8
+                                                                            )}</strong></span>
                                                                 </p>
                                                             </div>
 
@@ -824,61 +830,9 @@ const sendOrderConfirmationEmail = async (order) => {
 
 
 
-                    <div class="u-row-container" style="padding: 0px;background-color: transparent">
-                        <div class="u-row"
-                            style="Margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
-                            <div
-                                style="border-collapse: collapse;display: table;width: 100%;background-color: transparent;">
-                                <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px;"><tr style="background-color: #ffffff;"><![endif]-->
-
-                                <!--[if (mso)|(IE)]><td align="center" width="640" style="width: 640px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
-                                <div class="u-col u-col-100"
-                                    style="max-width: 320px;min-width: 640px;display: table-cell;vertical-align: top;">
-                                    <div
-                                        style="width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                                        <!--[if (!mso)&(!IE)]><!-->
-                                        <div
-                                            style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                                            <!--<![endif]-->
-
-                                            <table style="font-family:arial,helvetica,sans-serif;" role="presentation"
-                                                cellpadding="0" cellspacing="0" width="100%" border="0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px 0px;font-family:arial,helvetica,sans-serif;"
-                                                            align="left">
-
-                                                            <table height="0px" align="center" border="0"
-                                                                cellpadding="0" cellspacing="0" width="100%"
-                                                                style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 1px dotted #BBBBBB;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%">
-                                                                <tbody>
-                                                                    <tr style="vertical-align: top">
-                                                                        <td
-                                                                            style="word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%">
-                                                                            <span>&#160;</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-                                            <!--[if (!mso)&(!IE)]><!-->
-                                        </div><!--<![endif]-->
-                                    </div>
-                                </div>
-                                <!--[if (mso)|(IE)]></td><![endif]-->
-                                <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="u-row-container ordered_products" style="padding: 0px;background-color: transparent">
+                   ${order?.cart?.map((ele) => {
+                     return `
+                     <div class="u-row-container ordered_products" style="padding: 0px;background-color: transparent">
                         <div class="u-row"
                             style="Margin: 0 auto;min-width: 320px;max-width: 640px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
                             <div
@@ -905,7 +859,10 @@ const sendOrderConfirmationEmail = async (order) => {
                                                             <div
                                                                 style="line-height: 140%; text-align: left; word-wrap: break-word;">
                                                                 <p style="font-size: 14px; line-height: 140%;"><span
-                                                                        style="font-size: 16px; line-height: 22.4px;">{{order.items.title}}</span>
+                                                                        style="font-size: 16px; line-height: 22.4px;">${ele?.title?.slice(
+                                                                          0,
+                                                                          30
+                                                                        )}</span>
                                                                 </p>
                                                             </div>
 
@@ -939,7 +896,9 @@ const sendOrderConfirmationEmail = async (order) => {
                                                             <div
                                                                 style="line-height: 140%; text-align: left; word-wrap: break-word;">
                                                                 <p style="font-size: 14px; line-height: 140%;"><span
-                                                                        style="font-size: 16px; line-height: 22.4px;">{{order.items.quantity}}</span>
+                                                                        style="font-size: 16px; line-height: 22.4px;">${
+                                                                          ele.quantity
+                                                                        }</span>
                                                                 </p>
                                                             </div>
 
@@ -973,7 +932,10 @@ const sendOrderConfirmationEmail = async (order) => {
                                                             <div
                                                                 style="line-height: 140%; text-align: right; word-wrap: break-word;">
                                                                 <p style="font-size: 14px; line-height: 140%;"><span
-                                                                        style="font-size: 16px; line-height: 22.4px;">${{order.items.price}}</span>
+                                                                        style="font-size: 16px; line-height: 22.4px;">${
+                                                                          ele?.price *
+                                                                          ele?.quantity
+                                                                        }</span>
                                                                 </p>
                                                             </div>
 
@@ -991,6 +953,9 @@ const sendOrderConfirmationEmail = async (order) => {
                             </div>
                         </div>
                     </div>
+                    
+                    `;
+                   })}
 
 
 
@@ -1115,7 +1080,7 @@ const sendOrderConfirmationEmail = async (order) => {
                                                                 <p
                                                                     style="font-size: 14px; line-height: 140%; text-align: right;">
                                                                     <span
-                                                                        style="font-size: 14px; line-height: 19.6px;">${{order.subtotal.price}}</span>
+                                                                        style="font-size: 14px; line-height: 19.6px;">{{order.subtotal.price}}</span>
                                                                 </p>
                                                             </div>
 
@@ -1202,7 +1167,7 @@ const sendOrderConfirmationEmail = async (order) => {
                                                                 <p
                                                                     style="font-size: 14px; line-height: 140%; text-align: right;">
                                                                     <span
-                                                                        style="font-size: 14px; line-height: 19.6px;">${{order.shipping.price}}</span>
+                                                                        style="font-size: 14px; line-height: 19.6px;">{{order.shipping.price}}</span>
                                                                 </p>
                                                             </div>
 
@@ -1289,7 +1254,7 @@ const sendOrderConfirmationEmail = async (order) => {
                                                                 <p
                                                                     style="font-size: 14px; line-height: 140%; text-align: right;">
                                                                     <span
-                                                                        style="font-size: 14px; line-height: 19.6px;"><strong>${{order.total.price}}</strong></span>
+                                                                        style="font-size: 14px; line-height: 19.6px;"><strong>{{order.total.price}}</strong></span>
                                                                 </p>
                                                             </div>
 
@@ -1612,7 +1577,7 @@ const sendOrderConfirmationEmail = async (order) => {
 </body>
 
 </html>
-        `
+        `,
     })
     .then((data) => {
       return data;
