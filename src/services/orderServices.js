@@ -48,6 +48,7 @@ exports.createOrder = async (req) => {
       data: orders,
     };
   } catch (error) {
+    console.log(error);
     return {
       status: 500,
       message: "Fail to create order",
