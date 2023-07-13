@@ -1,6 +1,9 @@
 const OrderModal = require("../models/OrderModal");
 const ShopModal = require("../models/ShopModal");
 const ProductModal = require("../models/ProductModal");
+const {
+  sendOrderConfirmationEmail,
+} = require("../utils/common");
 
 exports.createOrder = async (req) => {
   const {
@@ -37,12 +40,15 @@ exports.createOrder = async (req) => {
       orders.push(order);
     }
 
+    await sendOrderConfirmationEmail(orders);
+
     return {
       message: "order created successfully",
       status: 200,
       data: orders,
     };
   } catch (error) {
+    console.log(error);
     return {
       status: 500,
       message: "Fail to create order",

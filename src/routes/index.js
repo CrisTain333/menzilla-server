@@ -8,6 +8,7 @@ const productRoute = require("../api/product/index");
 const paymentRoute = require("../api/payment/index");
 const orderRoute = require("../api/order/index");
 const chatRoute = require("../api/chat/index");
+const contactRoute = require("../api/contact/index");
 
 router.use("/auth", authRoute);
 router.use("/user", userRoute);
@@ -16,5 +17,6 @@ router.use("/product", productRoute);
 router.use("/payment", paymentRoute);
 router.use("/orders", orderRoute);
 router.use("/chat", chatRoute);
+router.use("/contact-us", contactRoute);
 
 module.exports = router;

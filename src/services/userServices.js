@@ -1,11 +1,21 @@
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/UserModel");
-const { uploadMultipleFiles } = require("../middleware/uploadImage");
+const {
+  uploadMultipleFiles,
+} = require("../middleware/uploadImage");
 const bcrypt = require("bcrypt");
 
 exports.handleGetUser = async (req, res) => {
   const auth_Token = req.header("Authorization");
   const token = auth_Token.split(" ")[1];
+
+  if (!token) {
+    throw new Error("token is required");
+    // return {
+    //   status: 401,
+    //   message: "Forbidden access",
+    // };
+  }
 
   const id = jwt.verify(token, process.env.JWT_SECRET);
   const user = await UserModel.findById(id.userId);
@@ -27,7 +37,10 @@ exports.updateUserProfilePic = async (req) => {
     );
     // result.save();
 
-    return { message: "Profile Picture updated ", status: 200 };
+    return {
+      message: "Profile Picture updated ",
+      status: 200,
+    };
   } catch (error) {
     console.log(error?.message);
     return { message: "Fail to upload image", status: 500 };
@@ -39,7 +52,10 @@ exports.updateProfile = async (req) => {
   const { name, email, phone, password } = req.body;
 
   const user = await UserModel.findById(userId);
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(
+    password,
+    user.password
+  );
 
   if (!isMatch) {
     return {
@@ -55,9 +71,15 @@ exports.updateProfile = async (req) => {
       { new: true }
     );
 
-    return { message: "Profile Updated Successfully", status: 200 };
+    return {
+      message: "Profile Updated Successfully",
+      status: 200,
+    };
   } catch (error) {
-    return { message: "Fail to Update Profile", status: 500 };
+    return {
+      message: "Fail to Update Profile",
+      status: 500,
+    };
   }
 };
 
@@ -72,7 +94,10 @@ exports.addAddress = async (req) => {
       (address) => address.addressType === data.addressType
     );
     if (sameTypeAddress) {
-      return { message: "Address all ready exist", status: 500 };
+      return {
+        message: "Address all ready exist",
+        status: 500,
+      };
     }
 
     const existsAddress = user.addresses.find(
@@ -110,16 +135,23 @@ exports.deleteAddress = async (req) => {
       message: "Address deleted successfully",
     };
   } catch (error) {
-    return { message: "Fail to Delete The Address", status: 500 };
+    return {
+      message: "Fail to Delete The Address",
+      status: 500,
+    };
   }
 };
 
 exports.changePassword = async (req) => {
   const { userId } = req.query;
-  const { oldPassword, newPassword, newConfirmPassword } = req.body;
+  const { oldPassword, newPassword, newConfirmPassword } =
+    req.body;
   try {
     const user = await UserModel.findById(userId);
-    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    const isMatch = await bcrypt.compare(
+      oldPassword,
+      user.password
+    );
 
     if (!isMatch) {
       return {
@@ -130,11 +162,15 @@ exports.changePassword = async (req) => {
     if (newPassword !== newConfirmPassword) {
       return {
         status: 400,
-        message: "Password doesn't matched with each other!",
+        message:
+          "Password doesn't matched with each other!",
       };
     }
     // Hash the plain password
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const hashedPassword = await bcrypt.hash(
+      newPassword,
+      10
+    );
     user.password = hashedPassword;
 
     await user.save();
@@ -144,6 +180,9 @@ exports.changePassword = async (req) => {
       message: "Password updated successfully !",
     };
   } catch (error) {
-    return { message: "Fail to change password", status: 500 };
+    return {
+      message: "Fail to change password",
+      status: 500,
+    };
   }
 };
