@@ -155,4 +155,9 @@ exports.loginUser = async (req, res) => {
 
 exports.handleResendEmail = async (data) => {
   // data;
+  console.log(data);
+  return {
+    status: 200,
+    message: "Verification Email sended",
+  };
 };
