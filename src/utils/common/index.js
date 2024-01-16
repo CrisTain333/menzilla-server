@@ -13,6 +13,8 @@ const createActivationToken = (user) => {
 };
 
 const sendEmail = async (options, activationUrl) => {
+  console.log(options);
+  console.log(activationUrl);
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: process.env.SMT_HOST,
@@ -28,7 +30,7 @@ const sendEmail = async (options, activationUrl) => {
     .sendMail({
       from: "menzilla99@gmail.com", // sender address
       to: options?.email, // list of receivers
-      subject: "Activate your account", // Subject line
+      subject: "Menzilla Account Activation: Please Confirm Your Email", // Subject line
       html: `
           <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -435,9 +437,11 @@ const sendEmail = async (options, activationUrl) => {
           `,
     })
     .then((data) => {
+      console.log(data);
       return data;
     })
     .catch((error) => {
+      console.log(error);
       return error;
     });
 
@@ -718,9 +722,7 @@ const sendOrderConfirmationEmail = async (order) => {
                                                                     <span
                                                                         style="font-family: arial, helvetica, sans-serif; font-size: 14px; line-height: 23.8px;"><span
                                                                             style="color: #ffffff;font-size: 16px; line-height: 27.2px;">Hey ${
-                                                                              order[0]
-                                                                                ?.user
-                                                                                ?.name
+                                                                              order[0]?.user?.name
                                                                             },</span></span>
                                                                 </p>
                                                                 <p
@@ -858,9 +860,7 @@ const sendOrderConfirmationEmail = async (order) => {
                                                     <div style="line-height: 140%; text-align: left; word-wrap: break-word;">
                                                         <p style="font-size: 14px; line-height: 140%;"><span
                                                                 style="font-size: 16px; line-height: 22.4px;">${
-                                                                  ele
-                                                                    ?.product
-                                                                    ?.name
+                                                                  ele?.product?.name
                                                                 }</span>
                                                         </p>
                                                     </div>
@@ -926,9 +926,7 @@ const sendOrderConfirmationEmail = async (order) => {
                                                     <div style="line-height: 140%; text-align: right; word-wrap: break-word;">
                                                         <p style="font-size: 14px; line-height: 140%;"><span
                                                                 style="font-size: 16px; line-height: 22.4px;">${
-                                                                  ele
-                                                                    ?.product
-                                                                    ?.discountPrice *
+                                                                  ele?.product?.discountPrice *
                                                                   ele?.quantity
                                                                 }</span>
                                                         </p>
@@ -1081,8 +1079,7 @@ const sendOrderConfirmationEmail = async (order) => {
                                                                     style="font-size: 14px; line-height: 140%; text-align: right;">
                                                                     <span
                                                                         style="font-size: 14px; line-height: 19.6px;"><strong>$${
-                                                                          order[0]
-                                                                            ?.totalPrice
+                                                                          order[0]?.totalPrice
                                                                         }</strong></span>
                                                                 </p>
                                                             </div>
@@ -1202,8 +1199,7 @@ const sendOrderConfirmationEmail = async (order) => {
                                                             <h3
                                                                 style="margin: 0px; color: #000000; line-height: 140%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: arial,helvetica,sans-serif; font-size: 14px;">
                                                                 ${
-                                                                  order[0]
-                                                                    ?.shippingAddress
+                                                                  order[0]?.shippingAddress
                                                                     ?.address1
                                                                 }
                                                             </h3>
